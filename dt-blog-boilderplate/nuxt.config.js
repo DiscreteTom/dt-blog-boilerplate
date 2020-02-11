@@ -1,10 +1,34 @@
 import colors from 'vuetify/es5/util/colors'
+import fs from 'fs'
+import yaml from 'js-yaml'
+
+/**
+ * config info in `config.yml`
+ */
+let config = {
+  title: "DiscreteTom's Blog Boilderplate",
+  root: 'index.md',
+  defaultLanguage: 'en'
+}
+let t = yaml.safeLoad(fs.readFileSync('../config.yml', 'utf8')) || {}
+for (let key in config) {
+  if (t[key]) config[key] = t[key]
+}
+
+/**
+ * Used for layout/default
+ */
+let contentFolders = fs
+  .readdirSync('../content', { withFileTypes: true })
+  .filter(dirent => dirent.isDirectory())
+  .map(dirent => dirent.name)
 
 export default {
+  env: {
+    contentFolders,
+    config
+  },
   mode: 'universal',
-  /*
-   ** Headers of the page
-   */
   head: {
     titleTemplate: '%s - ' + process.env.npm_package_name,
     title: process.env.npm_package_name || '',
@@ -19,25 +43,10 @@ export default {
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
   },
-  /*
-   ** Customize the progress-bar color
-   */
   loading: { color: '#fff' },
-  /*
-   ** Global CSS
-   */
   css: [],
-  /*
-   ** Plugins to load before mounting the App
-   */
   plugins: [],
-  /*
-   ** Nuxt.js dev-modules
-   */
   buildModules: ['@nuxtjs/vuetify'],
-  /*
-   ** Nuxt.js modules
-   */
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
@@ -71,13 +80,7 @@ export default {
       }
     }
   },
-  /*
-   ** Build configuration
-   */
   build: {
-    /*
-     ** You can extend webpack config here
-     */
     extend(config, ctx) {}
   }
 }
