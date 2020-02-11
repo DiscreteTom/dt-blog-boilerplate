@@ -3,14 +3,16 @@
     <v-navigation-drawer v-model="drawer" clipped fixed app>
       <v-list>
         <v-list-item
-          v-for="(item, i) in items"
+          v-for="(folder, i) in folders"
           :key="i"
-          :to="item.to"
+          :to="'/' + (folder == root ? '' : folder)"
           router
           exact
         >
           <v-list-item-content>
-            <v-list-item-title v-text="item.title" />
+            <v-list-item-title>
+              {{ folder | capitalizeFirst }}
+            </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -34,18 +36,15 @@
 export default {
   data() {
     return {
+      folders: process.env.contentFolders,
       drawer: false,
-      items: [
-        {
-          title: 'Welcome',
-          to: '/'
-        },
-        {
-          title: 'Inspire',
-          to: '/inspire'
-        }
-      ],
-      title: 'Vuetify.js'
+      title: process.env.config.title,
+      root: process.env.config.root
+    }
+  },
+  filters: {
+    capitalizeFirst(s) {
+      return s.charAt(0).toUpperCase() + s.substring(1)
     }
   }
 }
