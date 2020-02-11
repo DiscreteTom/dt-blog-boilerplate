@@ -1,5 +1,5 @@
 <template>
-  <v-app dark>
+  <v-app>
     <h1 v-if="error.statusCode === 404">
       {{ pageNotFound }}
     </h1>
@@ -21,13 +21,13 @@ export default {
       default: null
     }
   },
-  data () {
+  data() {
     return {
       pageNotFound: '404 Not Found',
       otherError: 'An error occurred'
     }
   },
-  head () {
+  head() {
     const title =
       this.error.statusCode === 404 ? this.pageNotFound : this.otherError
     return {
