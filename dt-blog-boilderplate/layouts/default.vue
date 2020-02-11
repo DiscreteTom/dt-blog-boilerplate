@@ -5,13 +5,13 @@
         <v-list-item
           v-for="(folder, i) in folders"
           :key="i"
-          :to="'/' + (folder == root ? '' : folder)"
+          :to="'/' + (folder.title == root ? '' : folder.title)"
           router
           exact
         >
           <v-list-item-content>
             <v-list-item-title>
-              {{ folder | capitalizeFirst }}
+              {{ folder.title | capitalizeFirst }}
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>

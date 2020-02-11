@@ -8,7 +8,8 @@ import yaml from 'js-yaml'
 let config = {
   title: "DiscreteTom's Blog Boilderplate",
   root: 'index.md',
-  defaultLanguage: 'en'
+  defaultLanguage: 'en',
+  folderOrderNote: '#'
 }
 let t = yaml.safeLoad(fs.readFileSync('../config.yml', 'utf8')) || {}
 for (let key in config) {
@@ -16,12 +17,17 @@ for (let key in config) {
 }
 
 /**
- * Used for layout/default
+ * Sorted by `order`
  */
 let contentFolders = fs
   .readdirSync('../content', { withFileTypes: true })
   .filter(dirent => dirent.isDirectory())
   .map(dirent => dirent.name)
+  .map(foldername => {
+    let t = foldername.split(config.folderOrderNote)
+    return { title: t[0], order: t.length > 1 ? Number(t[1]) : 0 }
+  })
+contentFolders.sort((a, b) => a.order - b.order)
 
 export default {
   env: {
