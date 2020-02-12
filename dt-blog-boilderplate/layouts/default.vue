@@ -23,8 +23,8 @@
 
       <v-spacer></v-spacer>
 
-      <!-- Me Btn -->
-      <v-tooltip bottom>
+      <!-- Author Btn -->
+      <v-tooltip bottom v-if="config.author">
         <template v-slot:activator="{ on }">
           <v-btn icon v-on="on">
             <v-avatar size="36">
@@ -44,7 +44,7 @@
         <span>Home</span>
       </v-tooltip>
       <!-- Github Btn -->
-      <v-tooltip bottom>
+      <v-tooltip bottom v-if="config.repo">
         <template v-slot:activator="{ on }">
           <v-btn icon v-on="on" :href="config.repo">
             <v-icon>mdi-github-circle</v-icon>
@@ -53,7 +53,7 @@
         <span>View source code</span>
       </v-tooltip>
       <!-- Email Btn -->
-      <v-tooltip bottom>
+      <v-tooltip bottom v-if="config.email">
         <template v-slot:activator="{ on }">
           <v-btn icon v-on="on" :href="'mailto:' + config.email">
             <v-icon>mdi-email</v-icon>
@@ -97,7 +97,6 @@
 
 <script>
 import ClipboardJS from 'clipboard'
-import axios from 'axios'
 
 export default {
   data() {
@@ -124,9 +123,11 @@ export default {
   mounted() {
     this.isMounted = true
     this.clipboard = new ClipboardJS('#shareBtn')
-    axios
-      .get('https://api.github.com/users/' + this.config.author)
-      .then(res => (this.avatar = res.data.avatar_url))
+    if (this.config.author) {
+      this.$axios
+        .$get('https://api.github.com/users/' + this.config.author)
+        .then(data => (this.avatar = data.avatar_url))
+    }
   },
   beforeDestroy() {
     this.clipboard.destroy()
