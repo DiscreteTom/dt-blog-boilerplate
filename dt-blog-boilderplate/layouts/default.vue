@@ -3,7 +3,7 @@
     <v-navigation-drawer v-model="drawer" clipped fixed app>
       <v-list>
         <v-list-item
-          v-for="(folder, i) in config.folders"
+          v-for="(folder, i) in folders"
           :key="i"
           :to="'/' + (folder.title == config.root ? '' : folder.title)"
           router
@@ -107,6 +107,7 @@ export default {
       isMounted: false,
       snackbar: false,
       avatar: '',
+      folders: process.env.contentFolders,
       config: process.env.config
     }
   },
