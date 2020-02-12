@@ -14,7 +14,10 @@
     "@nuxtjs/axios": "^5.3.6",
     "@nuxtjs/dotenv": "^1.4.0",
     "@nuxtjs/pwa": "^3.0.0-0",
+    "frontmatter-markdown-loader": "^3.1.0",
     "js-yaml": "^3.13.1",
+    "markdown-it": "^10.0.0",
+    "markdown-it-prism": "^2.0.3",
     "nuxt": "^2.0.0"
   },
   "devDependencies": {
