@@ -14,6 +14,7 @@
     "@nuxtjs/axios": "^5.3.6",
     "@nuxtjs/dotenv": "^1.4.0",
     "@nuxtjs/pwa": "^3.0.0-0",
+    "clipboard": "^2.0.4",
     "frontmatter-markdown-loader": "^3.1.0",
     "js-yaml": "^3.13.1",
     "markdown-it": "^10.0.0",
