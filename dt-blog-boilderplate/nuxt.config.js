@@ -10,7 +10,7 @@ let config = {
   root: 'index.md',
   defaultLanguage: 'en',
   folderOrderNote: '#',
-  github: 'https://github.com/DiscreteTom/dt-blog-boilerplate',
+  repo: 'https://github.com/DiscreteTom/dt-blog-boilerplate',
   email: 'discrete_tom@outlook.com'
 }
 let t = yaml.safeLoad(fs.readFileSync('../config.yml', 'utf8')) || {}

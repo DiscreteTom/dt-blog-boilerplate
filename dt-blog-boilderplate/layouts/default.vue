@@ -35,11 +35,11 @@
       <!-- Github Btn -->
       <v-tooltip bottom>
         <template v-slot:activator="{ on }">
-          <v-btn icon v-on="on" :href="github">
+          <v-btn icon v-on="on" :href="repo">
             <v-icon>mdi-github-circle</v-icon>
           </v-btn>
         </template>
-        <span>View on Github</span>
+        <span>View source code</span>
       </v-tooltip>
       <!-- Email Btn -->
       <v-tooltip bottom>
@@ -97,7 +97,7 @@ export default {
       folders: process.env.contentFolders,
       title: process.env.config.title,
       root: process.env.config.root,
-      github: process.env.config.github,
+      repo: process.env.config.repo,
       email: process.env.config.email
     }
   },
