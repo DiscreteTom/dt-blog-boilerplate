@@ -3,9 +3,9 @@
     <v-navigation-drawer v-model="drawer" clipped fixed app>
       <v-list>
         <v-list-item
-          v-for="(folder, i) in folders"
+          v-for="(folder, i) in config.folders"
           :key="i"
-          :to="'/' + (folder.title == root ? '' : folder.title)"
+          :to="'/' + (folder.title == config.root ? '' : folder.title)"
           router
           exact
         >
@@ -19,10 +19,21 @@
     </v-navigation-drawer>
     <v-app-bar clipped-left fixed app hide-on-scroll flat>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-toolbar-title v-text="title" />
+      <v-toolbar-title v-text="config.title" />
 
       <v-spacer></v-spacer>
 
+      <!-- Me Btn -->
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on }">
+          <v-btn icon v-on="on">
+            <v-avatar size="36">
+              <img :src="avatar" />
+            </v-avatar>
+          </v-btn>
+        </template>
+        <span>{{ config.author }}</span>
+      </v-tooltip>
       <!-- Home Btn -->
       <v-tooltip bottom>
         <template v-slot:activator="{ on }">
@@ -35,7 +46,7 @@
       <!-- Github Btn -->
       <v-tooltip bottom>
         <template v-slot:activator="{ on }">
-          <v-btn icon v-on="on" :href="repo">
+          <v-btn icon v-on="on" :href="config.repo">
             <v-icon>mdi-github-circle</v-icon>
           </v-btn>
         </template>
@@ -44,7 +55,7 @@
       <!-- Email Btn -->
       <v-tooltip bottom>
         <template v-slot:activator="{ on }">
-          <v-btn icon v-on="on" :href="'mailto:' + email">
+          <v-btn icon v-on="on" :href="'mailto:' + config.email">
             <v-icon>mdi-email</v-icon>
           </v-btn>
         </template>
@@ -72,7 +83,7 @@
       </v-container>
     </v-content>
     <!-- Share Tip -->
-    <v-snackbar v-model="snackbar" timeout="2000" right top>
+    <v-snackbar v-model="snackbar" :timeout="2000" right top>
       Copied to clipboard
       <v-btn color="pink" text @click="snackbar = false">
         Close
@@ -86,6 +97,7 @@
 
 <script>
 import ClipboardJS from 'clipboard'
+import axios from 'axios'
 
 export default {
   data() {
@@ -94,11 +106,8 @@ export default {
       drawer: false,
       isMounted: false,
       snackbar: false,
-      folders: process.env.contentFolders,
-      title: process.env.config.title,
-      root: process.env.config.root,
-      repo: process.env.config.repo,
-      email: process.env.config.email
+      avatar: '',
+      config: process.env.config
     }
   },
   filters: {
@@ -114,6 +123,9 @@ export default {
   mounted() {
     this.isMounted = true
     this.clipboard = new ClipboardJS('#shareBtn')
+    axios
+      .get('https://api.github.com/users/' + this.config.author)
+      .then(res => (this.avatar = res.data.avatar_url))
   },
   beforeDestroy() {
     this.clipboard.destroy()
