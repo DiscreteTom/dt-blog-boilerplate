@@ -53,7 +53,13 @@
       <!-- Share Btn -->
       <v-tooltip bottom>
         <template v-slot:activator="{ on }">
-          <v-btn icon v-on="on" :data-clipboard-text="url" id="shareBtn">
+          <v-btn
+            icon
+            v-on="on"
+            :data-clipboard-text="url"
+            id="shareBtn"
+            @click="snackbar = true"
+          >
             <v-icon>mdi-share-variant</v-icon>
           </v-btn>
         </template>
@@ -65,6 +71,13 @@
         <nuxt style="height:5000px" />
       </v-container>
     </v-content>
+    <!-- Share Tip -->
+    <v-snackbar v-model="snackbar" timeout="2000" right top>
+      Copied to clipboard
+      <v-btn color="pink" text @click="snackbar = false">
+        Close
+      </v-btn>
+    </v-snackbar>
     <v-footer>
       <span>&copy; {{ new Date().getFullYear() }}</span>
     </v-footer>
@@ -80,6 +93,7 @@ export default {
       clipboard: null,
       drawer: false,
       isMounted: false,
+      snackbar: false,
       folders: process.env.contentFolders,
       title: process.env.config.title,
       root: process.env.config.root,
