@@ -26,9 +26,15 @@
       <!-- Author Btn -->
       <v-tooltip bottom v-if="config.author">
         <template v-slot:activator="{ on }">
-          <v-btn icon v-on="on">
+          <v-btn icon v-on="on" :href="'https://github.com/' + config.author">
             <v-avatar size="36">
-              <img :src="avatar" />
+              <img v-if="avatar" :src="avatar" />
+              <v-progress-linear
+                v-else
+                color="black lighten-2"
+                buffer-value="0"
+                stream
+              ></v-progress-linear>
             </v-avatar>
           </v-btn>
         </template>
