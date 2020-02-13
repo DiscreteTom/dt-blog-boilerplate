@@ -32,13 +32,13 @@ export default {
       this.navs = [{ text: '', href: '/' }]
       let paths = this.$route.params.pathMatch.split('/')
       let context = this.content
-      let result = ''
+      let result = []
       let isDir = false
       for (let i = 0; i < paths.length; ++i) {
         let notFound = true
         for (let j = 0; j < context.length; ++j) {
           if (paths[i] == context[j].name) {
-            result += context[j].rawName
+            result.push(context[j].rawName)
             this.navs.push({
               text: context[j].name,
               href: paths.slice(0, i).join('/') + context[j].name
@@ -57,7 +57,7 @@ export default {
       this.navs[this.navs.length - 1].disabled = true
       // change state
       if (isDir) this.$store.commit('showFolder', context)
-      else this.$store.commit('showMarkdown', result)
+      else this.$store.commit('showMarkdown', result.join('/'))
     }
   },
   beforeRouteEnter(to, from, next) {
