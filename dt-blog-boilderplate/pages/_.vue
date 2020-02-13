@@ -42,8 +42,7 @@ export default {
             this.navs.push({
               text: context[j].name,
               to: '/' + paths.slice(0, i + 1).join('/'),
-              exact: true,
-              disabled: i == paths.length - 1 // disable the last link
+              exact: true
             })
             // get this.isDir
             isDir = context[j].isDir
