@@ -41,7 +41,8 @@ export default {
             result.push(context[j].rawName)
             this.navs.push({
               text: context[j].name,
-              href: paths.slice(0, i).join('/') + context[j].name
+              to: '/' + paths.slice(0, i + 1).join('/'),
+              exact: true
             })
             // get this.isDir
             isDir = context[j].isDir
