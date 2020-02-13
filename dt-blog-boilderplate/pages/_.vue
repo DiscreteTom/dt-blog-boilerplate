@@ -37,7 +37,7 @@ export default {
       let context = this.content
       let result = ''
       for (let i = 0; i < paths.length; ++i) {
-        let notFount = true
+        let notFound = true
         for (let j = 0; j < context.length; ++j) {
           if (paths[i] == context[j].name) {
             result += context[j].rawName
@@ -50,11 +50,11 @@ export default {
             // refresh context
             context = context[j].children
             this.context = context
-            notFount = false
+            notFound = false
             break
           }
         }
-        if (notFount) return '' // TODO: goto 404
+        if (notFound) return '' // TODO: goto 404
       }
       // disable the last nav
       this.navs[this.navs.length - 1].disabled = true
