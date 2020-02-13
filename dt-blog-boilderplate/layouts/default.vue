@@ -98,7 +98,7 @@
         Close
       </v-btn>
     </v-snackbar>
-    <v-footer>
+    <v-footer app absolute inset>
       <span>&copy; {{ new Date().getFullYear() }}</span>
     </v-footer>
   </v-app>
