@@ -6,20 +6,17 @@
 
 <script>
 export default {
-  data() {
-    return {
-      attributes: {},
-      selectedArticle: null
-    }
-  },
-  props: {
-    rawPath: String
-  },
-  created() {
-    if (this.rawPath) {
-      const markdown = require(`~/../content/${this.rawPath}`)
-      this.attributes = markdown.attributes
-      this.selectedArticle = markdown.vue.component
+  computed: {
+    attributes() {
+      if (this.$store.state.isDir || !this.$store.state.rawPath) return {}
+      else
+        return require(`~/../content/${this.$store.state.rawPath}`).attributes
+    },
+    selectedArticle() {
+      if (this.$store.state.isDir || !this.$store.state.rawPath) return null
+      else
+        return require(`~/../content/${this.$store.state.rawPath}`).vue
+          .component
     }
   }
 }

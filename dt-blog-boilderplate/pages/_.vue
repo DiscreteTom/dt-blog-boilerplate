@@ -5,8 +5,8 @@
         <v-icon>mdi-chevron-right</v-icon>
       </template>
     </v-breadcrumbs>
-    <Folder v-if="isDir" :context="context"></Folder>
-    <Markdown v-else :rawPath="rawPath"></Markdown>
+    <Folder v-if="$store.state.isDir"></Folder>
+    <Markdown v-else></Markdown>
   </div>
 </template>
 
@@ -23,9 +23,6 @@ export default {
   data() {
     return {
       navs: [],
-      isDir: false,
-      rawPath: '',
-      context: [],
       content: process.env.content
     }
   },
@@ -36,6 +33,7 @@ export default {
       let paths = this.$route.params.pathMatch.split('/')
       let context = this.content
       let result = ''
+      let isDir = false
       for (let i = 0; i < paths.length; ++i) {
         let notFound = true
         for (let j = 0; j < context.length; ++j) {
@@ -45,27 +43,28 @@ export default {
               text: context[j].name,
               href: paths.slice(0, i).join('/') + context[j].name
             })
-            // get this.isDir&context
-            this.isDir = context[j].isDir
+            // get this.isDir
+            isDir = context[j].isDir
             // refresh context
             context = context[j].children
-            this.context = context
             notFound = false
             break
           }
         }
-        if (notFound) return '' // TODO: goto 404
+        if (notFound) return // TODO: goto 404
       }
       // disable the last nav
       this.navs[this.navs.length - 1].disabled = true
-      // judge markdown or folder
-      if (!this.isDir) this.rawPath = result
+      // change state
+      if (isDir) this.$store.commit('showFolder', context)
+      else this.$store.commit('showMarkdown', result)
     }
   },
-  beforeRouteEnter(from, to, next) {
+  beforeRouteEnter(to, from, next) {
     next(v => v.init())
   },
-  beforeRouteChange() {
+  beforeRouteUpdate(to, from, next) {
+    next()
     this.init()
   }
 }
