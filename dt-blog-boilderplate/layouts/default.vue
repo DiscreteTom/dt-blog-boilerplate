@@ -88,7 +88,7 @@
     </v-app-bar>
     <v-content>
       <v-container>
-        <nuxt style="height:5000px" />
+        <nuxt />
       </v-container>
     </v-content>
     <!-- Share Tip -->
