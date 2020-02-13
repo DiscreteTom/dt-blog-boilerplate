@@ -7,7 +7,7 @@ import MarkdownIt from 'markdown-it'
 import mip from 'markdown-it-prism'
 
 /**
- * Global config info in `config.yml`
+ * Global config info in `_config.yml`
  */
 let config = {
   title: "DiscreteTom's Blog Boilderplate",
@@ -17,9 +17,10 @@ let config = {
   email: '',
   author: '',
   folderIcon: 'mdi-folder-outline',
-  fileIcon: 'mdi-file-outline'
+  fileIcon: 'mdi-file',
+  orderDecider: '-'
 }
-let t = yaml.safeLoad(fs.readFileSync('../config.yml', 'utf8')) || {}
+let t = yaml.safeLoad(fs.readFileSync('../_config.yml', 'utf8')) || {}
 for (let key in config) {
   if (t[key]) config[key] = t[key]
 }
@@ -32,42 +33,63 @@ function loadFolder(folder) {
   let ymlContent = ''
   try {
     // config file is optional
-    ymlContent = fs.readFileSync(folder + '/config.yml', 'utf8')
+    ymlContent = fs.readFileSync(folder + '/_config.yml', 'utf8')
   } catch {}
-  let folderConfig = []
-  // if config is not a valid yml, throw err
-  if (ymlContent) folderConfig = yaml.safeLoad(ymlContent)
-  // if config is not an array, throw err
-  if (!Array.isArray(folderConfig))
-    throw new Error(`Invalid file: ${folder}/config.yml`)
-  return folderConfig.map(v => {
-    // for every active dirent `v`
-    let dirent = ''
-    let icon = ''
-    if (typeof v === 'object') {
-      dirent = v.dirent || ''
-      icon = v.icon || ''
-    } else if (typeof v === 'string') {
-      dirent = v
+  let folderConfig = {
+    icon: {},
+    orderDecider: config.orderDecider
+  }
+  // get folderConfig
+  if (ymlContent) {
+    // if config is not a valid yml, throw err
+    let t = yaml.safeLoad(ymlContent)
+    for (let key in folderConfig) {
+      if (t[key]) folderConfig[key] = t[key]
     }
-    // if invalid dirent
-    if (dirent === '')
-      throw new Error(`Invalid value in ${folder}/config.yml: ${v}`)
-    // judge folder and get icon
-    let isDir = fs.lstatSync(folder + '/' + dirent).isDirectory()
-    if (isDir) icon = icon || config.folderIcon
-    else icon = icon || config.fileIcon
-    // construct result
-    let result = {
-      isDir,
-      icon,
-      name: dirent,
-      children: []
-    }
-    // load sub-folder
-    if (isDir) result.children = loadFolder(folder + '/' + dirent)
-    return result
-  })
+    folderConfig.icon = folderConfig.icon || {}
+  }
+  // construct result
+  let result = fs
+    .readdirSync(folder, { withFileTypes: true })
+    .filter(dirent => !dirent.name.startsWith('_'))
+    .map(dirent => {
+      let isDir = dirent.isDirectory()
+      let rawName = dirent.name
+      let orderDeciderIndex = rawName.indexOf(folderConfig.orderDecider)
+      let order = 0
+      let icon = isDir ? config.folderIcon : config.fileIcon
+      let name = rawName
+      if (orderDeciderIndex !== -1) {
+        // orderDecider exists
+        let t = rawName.split(folderConfig.orderDecider)
+        if (t[0] !== '') {
+          try {
+            order = Number(t[0])
+          } catch {
+            throw new Error(
+              `Invalid file name, please check orderDecider: ${folder}/${rawName}`
+            )
+          }
+        }
+        name = rawName.slice(orderDeciderIndex + 1)
+      }
+      name = name.split('.')[0]
+      // update icon
+      icon = folderConfig.icon[name] || icon
+      let ret = {
+        isDir,
+        icon,
+        rawName,
+        name,
+        children: [],
+        order
+      }
+      // load sub-folders
+      if (isDir) ret.children = loadFolder(folder + '/' + rawName)
+      return ret
+    })
+  result.sort((a, b) => a.order - b.order)
+  return result
 }
 
 /**
