@@ -60,12 +60,11 @@ export default {
       else this.$store.commit('showMarkdown', result.join('/'))
     }
   },
-  beforeRouteEnter(to, from, next) {
-    next(v => v.init())
-  },
-  beforeRouteUpdate(to, from, next) {
-    next()
+  created() {
     this.init()
+  },
+  watch: {
+    $route: 'init'
   }
 }
 </script>
