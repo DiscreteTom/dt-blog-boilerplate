@@ -5,7 +5,7 @@
         <v-icon>mdi-chevron-right</v-icon>
       </template>
     </v-breadcrumbs>
-    <Folder v-if="isDir"></Folder>
+    <Folder v-if="isDir" :context="context"></Folder>
     <Markdown v-else :rawPath="rawPath"></Markdown>
   </div>
 </template>
@@ -16,19 +16,22 @@
  * Path info is stored in `this.$route.params.pathMatch`
  */
 import Markdown from '~/components/Markdown.vue'
+import Folder from '~/components/Folder.vue'
+
 export default {
-  components: { Markdown },
+  components: { Markdown, Folder },
   data() {
     return {
       navs: [],
       isDir: false,
       rawPath: '',
+      context: [],
       content: process.env.content
     }
   },
   methods: {
-    // calculate `this.navs` and `this.isDir`, return rawPath
-    getRawPath() {
+    // calculate `this.navs`, `this.context`, `this.isDir`, `this.rawPath`
+    init() {
       this.navs = [{ text: '', href: '/' }]
       let paths = this.$route.params.pathMatch.split('/')
       let context = this.content
@@ -42,10 +45,11 @@ export default {
               text: context[j].name,
               href: paths.slice(0, i).join('/') + context[j].name
             })
-            // get this.isDir
-            this.isDir = context.isDir
+            // get this.isDir&context
+            this.isDir = context[j].isDir
             // refresh context
-            context = context.children
+            context = context[j].children
+            this.context = context
             notFount = false
             break
           }
@@ -54,11 +58,15 @@ export default {
       }
       // disable the last nav
       this.navs[this.navs.length - 1].disabled = true
-      return result
+      // judge markdown or folder
+      if (!this.isDir) this.rawPath = result
     }
   },
-  created() {
-    this.rawPath = this.getRawPath()
+  beforeRouteEnter(from, to, next) {
+    next(v => v.init())
+  },
+  beforeRouteChange() {
+    this.init()
   }
 }
 </script>

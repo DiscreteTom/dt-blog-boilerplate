@@ -16,9 +16,11 @@ export default {
     rawPath: String
   },
   created() {
-    const markdown = require(`~/../content/${this.rawPath}`)
-    this.attributes = markdown.attributes
-    this.selectedArticle = markdown.vue.component
+    if (this.rawPath) {
+      const markdown = require(`~/../content/${this.rawPath}`)
+      this.attributes = markdown.attributes
+      this.selectedArticle = markdown.vue.component
+    }
   }
 }
 </script>
