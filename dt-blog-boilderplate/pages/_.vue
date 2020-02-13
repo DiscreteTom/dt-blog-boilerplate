@@ -42,7 +42,8 @@ export default {
             this.navs.push({
               text: context[j].name,
               to: '/' + paths.slice(0, i + 1).join('/'),
-              exact: true
+              exact: true,
+              disabled: i == paths.length - 1 // disable the last link
             })
             // get this.isDir
             isDir = context[j].isDir
@@ -54,8 +55,6 @@ export default {
         }
         if (notFound) return // TODO: goto 404
       }
-      // disable the last nav
-      this.navs[this.navs.length - 1].disabled = true
       // change state
       if (isDir) this.$store.commit('showFolder', context)
       else this.$store.commit('showMarkdown', result.join('/'))
