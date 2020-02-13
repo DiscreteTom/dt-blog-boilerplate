@@ -63,13 +63,11 @@ function loadFolder(folder) {
         // orderDecider exists
         let t = rawName.split(folderConfig.orderDecider)
         if (t[0] !== '') {
-          try {
-            order = Number(t[0])
-          } catch {
+          order = Number(t[0])
+          if (isNaN(order))
             throw new Error(
               `Invalid file name, please check orderDecider: ${folder}/${rawName}`
             )
-          }
         }
         name = rawName.slice(orderDeciderIndex + 1)
       }
