@@ -5,7 +5,8 @@
         <v-icon>mdi-chevron-right</v-icon>
       </template>
     </v-breadcrumbs>
-    <component :is="selectedArticle" />
+    <Folder v-if="isDir"></Folder>
+    <Markdown v-else :rawPath="rawPath"></Markdown>
   </div>
 </template>
 
@@ -14,17 +15,19 @@
  * This page will handle all routes.
  * Path info is stored in `this.$route.params.pathMatch`
  */
+import Markdown from '~/components/Markdown.vue'
 export default {
+  components: { Markdown },
   data() {
     return {
       navs: [],
-      attributes: {},
-      selectedArticle: null,
+      isDir: false,
+      rawPath: '',
       content: process.env.content
     }
   },
   methods: {
-    // calculate `this.navs`, return rawPath
+    // calculate `this.navs` and `this.isDir`, return rawPath
     getRawPath() {
       this.navs = [{ text: '', href: '/' }]
       let paths = this.$route.params.pathMatch.split('/')
@@ -39,6 +42,9 @@ export default {
               text: context[j].name,
               href: paths.slice(0, i).join('/') + context[j].name
             })
+            // get this.isDir
+            this.isDir = context.isDir
+            // refresh context
             context = context.children
             notFount = false
             break
@@ -52,10 +58,7 @@ export default {
     }
   },
   created() {
-    let rawPath = this.getRawPath()
-    const markdown = require(`~/../content/${rawPath}`)
-    this.attributes = markdown.attributes
-    this.selectedArticle = markdown.vue.component
+    this.rawPath = this.getRawPath()
   }
 }
 </script>
