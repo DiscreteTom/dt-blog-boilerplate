@@ -3,15 +3,18 @@
     <v-navigation-drawer v-model="drawer" clipped fixed app>
       <v-list>
         <v-list-item
-          v-for="(folder, i) in folders"
+          v-for="(dirent, i) in content"
           :key="i"
-          :to="'/' + (folder.title == config.root ? '' : folder.title)"
+          :to="'/' + (dirent.name == config.root ? '' : dirent.name)"
           router
           exact
         >
+          <v-list-item-action>
+            <v-icon>{{ dirent.icon }}</v-icon>
+          </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>
-              {{ folder.title | capitalizeFirst }}
+              {{ dirent.isDir ? dirent.name : dirent.name | removeExtension }}
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
@@ -112,18 +115,18 @@ export default {
       isMounted: false,
       snackbar: false,
       avatar: '',
-      folders: process.env.contentFolders,
+      content: process.env.content,
       config: process.env.config
-    }
-  },
-  filters: {
-    capitalizeFirst(s) {
-      return s.charAt(0).toUpperCase() + s.substring(1)
     }
   },
   computed: {
     url() {
       return this.isMounted ? window.location.href : ''
+    }
+  },
+  filters: {
+    removeExtension(s) {
+      return s.split('.')[0]
     }
   },
   mounted() {

@@ -1,18 +1,23 @@
+const path = require('path')
 import colors from 'vuetify/es5/util/colors'
 import fs from 'fs'
 import yaml from 'js-yaml'
+import Mode from 'frontmatter-markdown-loader/mode'
+import MarkdownIt from 'markdown-it'
+import mip from 'markdown-it-prism'
 
 /**
- * config info in `config.yml`
+ * Global config info in `config.yml`
  */
 let config = {
   title: "DiscreteTom's Blog Boilderplate",
   root: 'index.md',
   defaultLanguage: 'en',
-  folderOrderNote: '#',
   repo: '',
   email: '',
-  author: ''
+  author: '',
+  folderIcon: 'mdi-folder-outline',
+  fileIcon: 'mdi-file-outline'
 }
 let t = yaml.safeLoad(fs.readFileSync('../config.yml', 'utf8')) || {}
 for (let key in config) {
@@ -20,21 +25,63 @@ for (let key in config) {
 }
 
 /**
- * Sorted by `order`
+ * Content tree
  */
-let contentFolders = fs
-  .readdirSync('../content', { withFileTypes: true })
-  .filter(dirent => dirent.isDirectory())
-  .map(dirent => dirent.name)
-  .map(foldername => {
-    let t = foldername.split(config.folderOrderNote)
-    return { title: t[0], order: t.length > 1 ? Number(t[1]) : 0 }
+let content = loadFolder('../content')
+function loadFolder(folder) {
+  let ymlContent = ''
+  try {
+    // config file is optional
+    ymlContent = fs.readFileSync(folder + '/config.yml', 'utf8')
+  } catch {}
+  let folderConfig = []
+  // if config is not a valid yml, throw err
+  if (ymlContent) folderConfig = yaml.safeLoad(ymlContent)
+  // if config is not an array, throw err
+  if (!Array.isArray(folderConfig))
+    throw new Error(`Invalid file: ${folder}/config.yml`)
+  return folderConfig.map(v => {
+    // for every active dirent `v`
+    let dirent = ''
+    let icon = ''
+    if (typeof v === 'object') {
+      dirent = v.dirent || ''
+      icon = v.icon || ''
+    } else if (typeof v === 'string') {
+      dirent = v
+    }
+    // if invalid dirent
+    if (dirent === '')
+      throw new Error(`Invalid value in ${folder}/config.yml: ${v}`)
+    // judge folder and get icon
+    let isDir = fs.lstatSync(folder + '/' + dirent).isDirectory()
+    if (isDir) icon = icon || config.folderIcon
+    else icon = icon || config.fileIcon
+    // construct result
+    let result = {
+      isDir,
+      icon,
+      name: dirent,
+      children: []
+    }
+    // load sub-folder
+    if (isDir) result.children = loadFolder(folder + '/' + dirent)
+    return result
   })
-contentFolders.sort((a, b) => a.order - b.order)
+}
+
+/**
+ * Markdown renderer
+ */
+const md = new MarkdownIt({
+  html: true,
+  typographer: true
+})
+md.use(mip)
 
 export default {
   env: {
-    contentFolders,
+    content,
     config
   },
   mode: 'universal',
@@ -90,6 +137,18 @@ export default {
     }
   },
   build: {
-    extend(config, ctx) {}
+    extend(config, ctx) {
+      config.module.rules.push({
+        test: /\.md$/,
+        loader: 'frontmatter-markdown-loader',
+        include: path.resolve(__dirname, 'contents'),
+        options: {
+          mode: [Mode.VUE_RENDER_FUNCTIONS, Mode.VUE_COMPONENT],
+          markdown(body) {
+            return md.render(body)
+          }
+        }
+      })
+    }
   }
 }
