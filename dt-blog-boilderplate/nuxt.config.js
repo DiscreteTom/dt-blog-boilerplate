@@ -89,6 +89,16 @@ function loadFolder(folder) {
   result.sort((a, b) => a.order - b.order)
   return result
 }
+let contentRoutes = getContentRoutes('', content)
+function getContentRoutes(prefix, context) {
+  return context.reduce((result, dirent) => {
+    let current = [dirent.name]
+    if (dirent.isDir) {
+      current = current.concat(getContentRoutes(dirent.name, dirent.children))
+    }
+    return result.concat(current.map(v => [prefix, v].join('/')))
+  }, [])
+}
 
 /**
  * Markdown renderer
@@ -176,5 +186,8 @@ export default {
         }
       )
     }
+  },
+  generate: {
+    routes: contentRoutes.concat(['/'])
   }
 }
