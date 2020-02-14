@@ -6,18 +6,27 @@
 
 <script>
 export default {
-  computed: {
-    attributes() {
-      if (this.$store.state.isDir || !this.$store.state.rawPath) return {}
-      else
-        return require(`~/../content/${this.$store.state.rawPath}`).attributes
-    },
-    selectedArticle() {
-      if (this.$store.state.isDir || !this.$store.state.rawPath) return null
-      else
-        return require(`~/../content/${this.$store.state.rawPath}`).vue
-          .component
+  data() {
+    return {
+      attributes: {},
+      selectedArticle: null
     }
+  },
+  methods: {
+    refresh() {
+      if (this.$store.state.rawPath) {
+        import(`~/../content/${this.$store.state.rawPath}`).then(m => {
+          this.attributes = m.attributes
+          this.selectedArticle = m.vue.component
+        })
+      }
+    }
+  },
+  watch: {
+    '$store.state.isDir': 'refresh'
+  },
+  created() {
+    this.refresh()
   }
 }
 </script>
