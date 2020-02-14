@@ -23,11 +23,7 @@
     <v-app-bar clipped-left fixed app hide-on-scroll flat>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title v-text="config.title" />
-      <v-breadcrumbs :items="$store.state.navs" large>
-        <template v-slot:divider>
-          <v-icon>mdi-chevron-right</v-icon>
-        </template>
-      </v-breadcrumbs>
+      <BreadCrumbs class="d-none d-sm-flex"></BreadCrumbs>
 
       <v-spacer></v-spacer>
 
@@ -111,8 +107,10 @@
 
 <script>
 import ClipboardJS from 'clipboard'
+import BreadCrumbs from '~/components/BreadCrumbs.vue'
 
 export default {
+  components: { BreadCrumbs },
   data() {
     return {
       clipboard: null,

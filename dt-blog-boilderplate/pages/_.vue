@@ -1,5 +1,6 @@
 <template>
   <div>
+    <BreadCrumbs class="d-flex d-sm-none"></BreadCrumbs>
     <Folder v-if="$store.state.isDir"></Folder>
     <Markdown v-else></Markdown>
   </div>
@@ -12,9 +13,10 @@
  */
 import Markdown from '~/components/Markdown.vue'
 import Folder from '~/components/Folder.vue'
+import BreadCrumbs from '~/components/BreadCrumbs.vue'
 
 export default {
-  components: { Markdown, Folder },
+  components: { Markdown, Folder, BreadCrumbs },
   data() {
     return {
       content: process.env.content
