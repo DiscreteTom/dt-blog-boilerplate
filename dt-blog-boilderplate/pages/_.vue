@@ -26,6 +26,11 @@ export default {
   methods: {
     // calculate `this.navs`, `this.context`, `this.isDir`, `this.rawPath`
     init() {
+      if (this.$route.params.pathMatch == '') {
+        // redirect to the root object
+        this.$router.push('/' + this.config.root)
+        return
+      }
       let navs = []
       let paths = this.$route.params.pathMatch.split('/')
       if (this.$route.params.pathMatch == '')
@@ -52,7 +57,10 @@ export default {
             break
           }
         }
-        if (notFound) return // TODO: goto 404
+        if (notFound) {
+          this.$router.push('/404')
+          return
+        }
       }
       // change state
       if (isDir) this.$store.commit('showFolder', context)
@@ -62,11 +70,12 @@ export default {
       else this.$store.commit('setNavs', navs)
     }
   },
-  created() {
-    this.init()
+  beforeRouteEnter(to, from, next) {
+    next(v => v.init())
   },
-  watch: {
-    $route: 'init'
+  beforeRouteUpdate(to, from, next) {
+    next()
+    this.init()
   }
 }
 </script>

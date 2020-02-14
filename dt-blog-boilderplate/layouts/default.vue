@@ -5,7 +5,7 @@
         <v-list-item
           v-for="(dirent, i) in content"
           :key="i"
-          :to="'/' + (dirent.name == config.root ? '' : dirent.name)"
+          :to="'/' + dirent.name"
           router
           exact
         >
@@ -47,7 +47,7 @@
       <!-- Home Btn -->
       <v-tooltip bottom>
         <template v-slot:activator="{ on }">
-          <v-btn icon v-on="on" @click="$router.push('/')">
+          <v-btn icon v-on="on" @click="$router.push('/' + config.root)">
             <v-icon>mdi-home</v-icon>
           </v-btn>
         </template>
