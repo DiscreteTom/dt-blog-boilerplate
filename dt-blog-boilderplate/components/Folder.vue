@@ -5,7 +5,7 @@
       x-large
       class="justify-start"
       v-for="(dirent, i) in context"
-      :to="$route.params.pathMatch + '/' + dirent.name"
+      :to="($route.params.pathMatch || config.root) + '/' + dirent.name"
       :key="i"
     >
       <v-icon class="mr-5">{{ dirent.icon }}</v-icon>
@@ -16,10 +16,15 @@
 
 <script>
 export default {
-  computed:{
-		context(){
-			return this.$store.state.context
-		}
-	}
+  data() {
+    return {
+      config: process.env.config
+    }
+  },
+  computed: {
+    context() {
+      return this.$store.state.context
+    }
+  }
 }
 </script>
