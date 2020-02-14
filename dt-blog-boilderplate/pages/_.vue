@@ -19,14 +19,18 @@ export default {
   components: { Markdown, Folder, BreadCrumbs },
   data() {
     return {
-      content: process.env.content
+      content: process.env.content,
+      config: process.env.config
     }
   },
   methods: {
     // calculate `this.navs`, `this.context`, `this.isDir`, `this.rawPath`
     init() {
-      let navs = [{ text: '', href: '/' }]
+      let navs = []
       let paths = this.$route.params.pathMatch.split('/')
+      if (this.$route.params.pathMatch == '')
+        // current context is the root object
+        paths = [this.config.root]
       let context = this.content
       let result = []
       let isDir = false
@@ -53,7 +57,9 @@ export default {
       // change state
       if (isDir) this.$store.commit('showFolder', context)
       else this.$store.commit('showMarkdown', result.join('/'))
-      this.$store.commit('setNavs', navs)
+      // if current context == root object, no navs
+      if (this.$route.params.pathMatch == '') this.$store.commit('setNavs', [])
+      else this.$store.commit('setNavs', navs)
     }
   },
   created() {

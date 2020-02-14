@@ -1,5 +1,9 @@
 <template>
-  <v-breadcrumbs :items="$store.state.navs" large>
+  <v-breadcrumbs
+    v-if="$store.state.navs.length"
+    :items="[{ text: '', href: '/' }].concat($store.state.navs)"
+    large
+  >
     <template v-slot:divider>
       <v-icon>mdi-chevron-right</v-icon>
     </template>
