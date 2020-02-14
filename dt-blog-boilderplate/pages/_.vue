@@ -1,10 +1,5 @@
 <template>
   <div>
-    <v-breadcrumbs :items="navs" large>
-      <template v-slot:divider>
-        <v-icon>mdi-chevron-right</v-icon>
-      </template>
-    </v-breadcrumbs>
     <Folder v-if="$store.state.isDir"></Folder>
     <Markdown v-else></Markdown>
   </div>
@@ -22,14 +17,13 @@ export default {
   components: { Markdown, Folder },
   data() {
     return {
-      navs: [],
       content: process.env.content
     }
   },
   methods: {
     // calculate `this.navs`, `this.context`, `this.isDir`, `this.rawPath`
     init() {
-      this.navs = [{ text: '', href: '/' }]
+      let navs = [{ text: '', href: '/' }]
       let paths = this.$route.params.pathMatch.split('/')
       let context = this.content
       let result = []
@@ -39,7 +33,7 @@ export default {
         for (let j = 0; j < context.length; ++j) {
           if (paths[i] == context[j].name) {
             result.push(context[j].rawName)
-            this.navs.push({
+            navs.push({
               text: context[j].name,
               to: '/' + paths.slice(0, i + 1).join('/'),
               exact: true
@@ -57,6 +51,7 @@ export default {
       // change state
       if (isDir) this.$store.commit('showFolder', context)
       else this.$store.commit('showMarkdown', result.join('/'))
+      this.$store.commit('setNavs', navs)
     }
   },
   created() {

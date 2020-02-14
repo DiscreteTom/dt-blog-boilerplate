@@ -1,6 +1,7 @@
 export default {
   state() {
     return {
+      navs: [], // displayed in layouts/default.vue
       isDir: false, // whether current page is a directory
       rawPath: '', // markdown file raw path if current page is a markdown
       context: [] // folder info if current page is a directory
@@ -14,6 +15,9 @@ export default {
     showFolder(state, context) {
       state.isDir = true
       state.context = context
+    },
+    setNavs(state, navs){
+      state.navs = navs
     }
   }
 }

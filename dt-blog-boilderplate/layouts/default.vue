@@ -23,6 +23,11 @@
     <v-app-bar clipped-left fixed app hide-on-scroll flat>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title v-text="config.title" />
+      <v-breadcrumbs :items="$store.state.navs" large>
+        <template v-slot:divider>
+          <v-icon>mdi-chevron-right</v-icon>
+        </template>
+      </v-breadcrumbs>
 
       <v-spacer></v-spacer>
 
