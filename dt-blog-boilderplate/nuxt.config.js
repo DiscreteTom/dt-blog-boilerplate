@@ -11,7 +11,7 @@ import mip from 'markdown-it-prism'
  */
 let config = {
   title: "DiscreteTom's Blog Boilderplate",
-  root: 'index.md',
+  root: 'index',
   defaultLanguage: 'en',
   repo: '',
   email: '',
