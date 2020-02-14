@@ -158,17 +158,23 @@ export default {
   },
   build: {
     extend(config, ctx) {
-      config.module.rules.push({
-        test: /\.md$/,
-        loader: 'frontmatter-markdown-loader',
-        include: path.resolve(__dirname, '..', 'content'),
-        options: {
-          mode: [Mode.VUE_RENDER_FUNCTIONS, Mode.VUE_COMPONENT],
-          markdown(body) {
-            return md.render(body)
+      config.module.rules.push(
+        {
+          test: /\.md$/,
+          loader: 'frontmatter-markdown-loader',
+          include: path.resolve(__dirname, '..', 'content'),
+          options: {
+            mode: [Mode.VUE_RENDER_FUNCTIONS, Mode.VUE_COMPONENT],
+            markdown(body) {
+              return md.render(body)
+            }
           }
+        },
+        {
+          test: /\.ya?ml$/,
+          loader: 'json-loader!yaml-loader'
         }
-      })
+      )
     }
   }
 }
