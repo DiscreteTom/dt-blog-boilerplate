@@ -14,9 +14,11 @@ export default {
   },
   methods: {
     refresh() {
-      if (this.$store.state.rawPath) {
+      if (!this.$store.state.current.isDir) {
         // rawPath: '/xxx/yyy'
-        import(`~/../content/${this.$store.state.rawPath.slice(1)}`).then(m => {
+        import(
+          `~/../content/${this.$store.state.current.rawPath.slice(1)}`
+        ).then(m => {
           this.attributes = m.attributes
           this.selectedArticle = m.vue.component
         })
@@ -24,7 +26,7 @@ export default {
     }
   },
   watch: {
-    '$store.state.rawPath': 'refresh'
+    '$store.state.current.rawPath': 'refresh'
   },
   created() {
     this.refresh()

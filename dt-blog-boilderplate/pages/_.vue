@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div v-if="$store.state.ready">
     <BreadCrumbs class="d-flex d-sm-none"></BreadCrumbs>
-    <Folder v-show="$store.state.isDir"></Folder>
-    <Markdown v-show="!$store.state.isDir"></Markdown>
+    <Folder v-show="$store.state.current.isDir"></Folder>
+    <Markdown v-show="!$store.state.current.isDir"></Markdown>
   </div>
 </template>
 
@@ -18,7 +18,7 @@ import BreadCrumbs from '~/components/BreadCrumbs.vue'
 export default {
   components: { Markdown, Folder, BreadCrumbs },
   methods: {
-    // calculate `navs`, `context`, `isDir`, `rawPath` in Vuex
+    // judge redirection, update vuex state
     init() {
       if (this.$route.path == '/') {
         // redirect to the root object
@@ -31,31 +31,8 @@ export default {
         this.$router.push('/404')
         return
       }
-      // change state
-      if (dirent.isDir) {
-        this.$store.commit('showFolder', dirent.children)
-      } else {
-        this.$store.commit('showMarkdown', dirent.rawPath)
-      }
-      this.$store.commit(
-        'setNavs',
-        dirent.path // => '/xxx/xxx'
-          .split('/') // =>['', 'xxx', 'xxx]
-          .slice(1) // => ['xxx', 'xxx']
-          .reduce(
-            (result, name, i) => {
-              let to = [result[result.length - 1].to, name].join('/')
-              result.push({
-                text: this.$store.state.pathMap[to].title,
-                exact: true,
-                to
-              })
-              return result
-            },
-            [{ text: '', exact: true, to: '' }]
-          )
-          .slice(1) // remove the '' route
-      )
+      // update state
+      this.$store.commit('setCurrent', dirent)
     }
   },
   beforeRouteEnter(to, from, next) {

@@ -118,6 +118,21 @@ function loadFolder(absPath, path) {
   result.sort((a, b) => a.order - b.order)
   return result
 }
+/**
+ * The `../content` folder dirent.
+ */
+let root = {
+  isDir: true,
+  icon: '',
+  rawName: '',
+  name: '',
+  title: config.title,
+  children: content,
+  order: 0,
+  absPath: '../content',
+  rawPath: '/',
+  path: '/'
+}
 
 /**
  * For `nuxt generate`
@@ -144,9 +159,9 @@ md.use(mip)
 
 export default {
   env: {
-    content,
     config,
-    pathMap
+    pathMap,
+    root
   },
   mode: 'universal',
   head: {

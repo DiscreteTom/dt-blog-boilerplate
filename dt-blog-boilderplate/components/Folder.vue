@@ -4,7 +4,7 @@
       block
       x-large
       class="justify-start"
-      v-for="(dirent, i) in $store.state.context"
+      v-for="(dirent, i) in $store.state.current.children"
       :to="dirent.path"
       :key="i"
     >
