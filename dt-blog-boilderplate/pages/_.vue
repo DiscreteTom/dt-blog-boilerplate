@@ -43,11 +43,12 @@ export default {
           .split('/') // =>['', 'xxx', 'xxx]
           .slice(1) // => ['xxx', 'xxx']
           .reduce(
-            (result, name) => {
+            (result, name, i) => {
+              let to = [result[result.length - 1].to, name].join('/')
               result.push({
-                text: name,
+                text: this.$store.state.pathMap[to].title,
                 exact: true,
-                to: [result[result.length - 1].to, name].join('/')
+                to
               })
               return result
             },
