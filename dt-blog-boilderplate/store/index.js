@@ -6,7 +6,7 @@ export default {
       content: process.env.content,
       pathMap: process.env.pathMap,
       // other vars
-      navs: [], // displayed in layouts/default.vue
+      navs: [], // displayed in components/BreadCrumbs
       isDir: false, // whether current page is a directory
       rawPath: '', // markdown file raw path if current page is a markdown
       context: [] // folder info if current page is a directory
