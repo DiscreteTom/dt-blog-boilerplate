@@ -31,113 +31,119 @@ for (let key in config) {
  */
 let pathMap = {}
 /**
- * Content tree
+ * `tag` => `[path]`
  */
-let content = loadFolder('../content', '')
+let tagMap = {}
 /**
- * Construct `pathMap` and return content tree with prefix `path` in the `absPath` folder.
- * Ignore dirent with prefix `_`.
+ * The `../content` folder.
  */
-function loadFolder(absPath, path) {
+let root = loadFolder('../content')
+/**
+ * Construct pathMap & tagMap, return content tree
+ */
+function loadFolder(absPath, path = '') {
+  // init folderConfig
+  let folderConfig = {
+    icon: config.folderIcon,
+    orderDecider: config.orderDecider,
+    title: ''
+  }
+  // update folderConfig if `_config.yml` exists
   let ymlContent = ''
   try {
     // config file is optional
     ymlContent = fs.readFileSync(absPath + '/_config.yml', 'utf8')
   } catch {}
-  let folderConfig = {
-    icon: {},
-    orderDecider: config.orderDecider
-  }
-  // get folderConfig
   if (ymlContent) {
     // if config is not a valid yml, throw err
     let t = yaml.safeLoad(ymlContent)
+    // update folderConfig
     for (let key in folderConfig) {
       if (t[key]) folderConfig[key] = t[key]
     }
-    folderConfig.icon = folderConfig.icon || {}
   }
-  // construct result
-  let result = fs
+  // construct children
+  let children = fs
     .readdirSync(absPath, { withFileTypes: true })
-    .filter(dirent => !dirent.name.startsWith('_'))
-    .map(dirent => {
-      // init some attribute
-      let isDir = dirent.isDirectory()
-      let rawName = dirent.name
-      let orderDeciderIndex = rawName.indexOf(folderConfig.orderDecider)
-      let order = 0
-      let icon = isDir ? config.folderIcon : config.fileIcon
-      let name = rawName
-      let currentAbsPath = [absPath, rawName].join('/') // '../content/xxx/yyy'
-      let currentRawPath = currentAbsPath.slice(10) // '/xxx/yyy'
-      // update name and order by orderDecider & file name suffix
+    .filter(dirent => !dirent.name.startsWith('_')) // ignore some dirents
+    .map(child => {
+      let childRawName = child.name // => 'order-name.suffix'
+      let childAbsPath = [absPath, childRawName].join('/') // '../content/rawName1/rawName2'
+      let childRawPath = childAbsPath.slice(10) // '/rawName1/rawName2'
+      let childOrder = 0
+      let childName = childRawName
+      // update name and childOrder by orderDecider & file name suffix
+      let orderDeciderIndex = childRawName.indexOf(folderConfig.orderDecider)
       if (orderDeciderIndex !== -1) {
         // orderDecider exists
-        let t = rawName.split(folderConfig.orderDecider)
+        let t = childRawName.split(folderConfig.orderDecider)
         if (t[0] !== '') {
-          order = Number(t[0])
-          if (isNaN(order))
+          childOrder = Number(t[0])
+          if (isNaN(childOrder))
             throw new Error(
-              `Invalid file name, please check orderDecider: ${absPath}/${rawName}`
+              `Invalid file name, please check orderDecider: ${absPath}/${childRawName}`
             )
         }
-        name = rawName.slice(orderDeciderIndex + 1)
+        childName = childRawName.slice(orderDeciderIndex + 1)
       }
-      name = name.split('.')[0] // remove file name suffix
-      // if dirent is markdown, get markdown attributes, get title
-      // TODO: update icon?
-      // TODO: load tags
-      // TODO: load folder title?
-      let title = name
-      if (!isDir && rawName.endsWith('.md')) {
-        let attributes = matter(fs.readFileSync(currentAbsPath).toString()).data
-        title = attributes.title || title
-      }
-      // update icon
-      icon = folderConfig.icon[name] || icon
-      // construct result
+      childName = childName.split('.')[0] // remove file name suffix
+      let childPath = [path, childName].join('/')
       let ret = {
-        isDir,
-        icon,
-        rawName,
-        name, // in path
-        title, // for display
-        children: [],
-        order,
-        absPath: currentAbsPath, // '../content/xxx/yyy'
-        rawPath: currentRawPath, // '/xxx/yyy'
-        path: [path, name].join('/')
+        isDir: child.isDirectory(),
+        icon: '', // will be overwritten below
+        name: childName, // in path
+        rawName: childRawName, // 'order-name.suffix'
+        title: '', // for display, will be overwritten below.
+        children: [], // will be overwritten below
+        order: childOrder,
+        absPath: childAbsPath,
+        rawPath: childRawPath,
+        path: childPath
+      }
+      if (child.isDirectory()) {
+        // if this child is a folder
+        let t = loadFolder(childAbsPath, childPath)
+        ret.icon = t.icon
+        ret.title = t.title || childName
+        ret.children = t.children
+      } else {
+        // this child is not a folder
+        // get markdown attributes
+        let attributes = matter(fs.readFileSync(childAbsPath).toString()).data
+        // get tags
+        if (attributes.tags)
+          attributes.tags.map(tag => {
+            if (tagMap[tag]) tagMap[tag].push(childPath)
+            else tagMap[tag] = [childPath]
+          })
+        // update result
+        ret.icon = attributes.icon || config.fileIcon
+        ret.title = attributes.title || childName
       }
       // update pathMap
       pathMap[ret.path] = ret
-      // load sub-folders
-      if (isDir) ret.children = loadFolder(ret.absPath, ret.path)
       return ret
     })
-  result.sort((a, b) => a.order - b.order)
+  children.sort((a, b) => a.order - b.order)
+  let result = {
+    isDir: true,
+    icon: folderConfig.icon,
+    rawName: '', // will be overwritten by parent
+    name: '', // will be overwritten by parent
+    title: folderConfig.title,
+    children,
+    order: 0, // will be overwritten by parent
+    absPath: '../content', // will be overwritten by parent
+    rawPath: '/', // will be overwritten by parent
+    path: '/' // will be overwritten by parent
+  }
   return result
-}
-/**
- * The `../content` folder dirent.
- */
-let root = {
-  isDir: true,
-  icon: '',
-  rawName: '',
-  name: '',
-  title: config.title,
-  children: content,
-  order: 0,
-  absPath: '../content',
-  rawPath: '/',
-  path: '/'
 }
 
 /**
  * For `nuxt generate`
  */
-let contentRoutes = getContentRoutes('', content)
+let contentRoutes = getContentRoutes('', root.children)
 function getContentRoutes(prefix, context) {
   return context.reduce((result, dirent) => {
     let current = [dirent.name]
@@ -160,8 +166,9 @@ md.use(mip)
 export default {
   env: {
     config,
+    root,
     pathMap,
-    root
+    tagMap
   },
   mode: 'universal',
   head: {
