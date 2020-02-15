@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-navigation-drawer v-model="drawer" clipped fixed app>
+    <v-navigation-drawer v-model="drawer" clipped app>
       <v-list>
         <v-list-item
           v-for="(dirent, i) in $store.state.content"
@@ -20,7 +20,7 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-    <v-app-bar clipped-left fixed app hide-on-scroll flat>
+    <v-app-bar clipped-left fixed app flat>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title v-text="$store.state.config.title" />
       <BreadCrumbs class="d-none d-sm-flex"></BreadCrumbs>
