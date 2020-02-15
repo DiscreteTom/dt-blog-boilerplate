@@ -1,6 +1,6 @@
 <template>
   <div>
-    <BreadCrumbs class="d-flex d-sm-none"></BreadCrumbs>
+    <BreadCrumbs class="d-md-none"></BreadCrumbs>
     <Folder v-show="$store.state.current.isDir"></Folder>
     <Markdown v-show="!$store.state.current.isDir"></Markdown>
   </div>

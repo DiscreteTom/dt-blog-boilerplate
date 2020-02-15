@@ -1,6 +1,17 @@
 <template>
   <v-app>
     <v-navigation-drawer v-model="drawer" clipped app>
+      <div class="d-flex d-sm-none">
+        <v-list-item>
+          <v-list-item-content>
+            <v-list-item-title class="title">
+              {{ $store.state.config.title }}
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-divider></v-divider>
+      </div>
+
       <v-list>
         <v-list-item
           v-for="(dirent, i) in $store.state.root.children"
@@ -21,8 +32,11 @@
     </v-navigation-drawer>
     <v-app-bar clipped-left fixed app flat>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-toolbar-title v-text="$store.state.config.title" />
-      <BreadCrumbs class="d-none d-sm-flex"></BreadCrumbs>
+      <v-toolbar-title
+        class="d-none d-sm-flex"
+        v-text="$store.state.config.title"
+      />
+      <BreadCrumbs class="d-none d-md-flex"></BreadCrumbs>
 
       <v-spacer></v-spacer>
 
