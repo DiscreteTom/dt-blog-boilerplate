@@ -26,14 +26,22 @@ for (let key in config) {
 }
 
 /**
+ * `path`=>`dirent`
+ */
+let pathMap = {}
+/**
  * Content tree
  */
-let content = loadFolder('../content')
-function loadFolder(folder) {
+let content = loadFolder('../content', '')
+/**
+ * Construct `pathMap` and return content tree with prefix `path` in the `absPath` folder.
+ * Ignore dirent with prefix `_`.
+ */
+function loadFolder(absPath, path) {
   let ymlContent = ''
   try {
     // config file is optional
-    ymlContent = fs.readFileSync(folder + '/_config.yml', 'utf8')
+    ymlContent = fs.readFileSync(absPath + '/_config.yml', 'utf8')
   } catch {}
   let folderConfig = {
     icon: {},
@@ -50,7 +58,7 @@ function loadFolder(folder) {
   }
   // construct result
   let result = fs
-    .readdirSync(folder, { withFileTypes: true })
+    .readdirSync(absPath, { withFileTypes: true })
     .filter(dirent => !dirent.name.startsWith('_'))
     .map(dirent => {
       let isDir = dirent.isDirectory()
@@ -66,7 +74,7 @@ function loadFolder(folder) {
           order = Number(t[0])
           if (isNaN(order))
             throw new Error(
-              `Invalid file name, please check orderDecider: ${folder}/${rawName}`
+              `Invalid file name, please check orderDecider: ${absPath}/${rawName}`
             )
         }
         name = rawName.slice(orderDeciderIndex + 1)
@@ -80,15 +88,24 @@ function loadFolder(folder) {
         rawName,
         name,
         children: [],
-        order
+        order,
+        absPath: [absPath, rawName].join('/'), // '../content/xxx/yyy'
+        rawPath: [absPath, rawName].join('/').slice(10), // '/xxx/yyy'
+        path: [path, name].join('/')
       }
+      // update pathMap
+      pathMap[ret.path] = ret
       // load sub-folders
-      if (isDir) ret.children = loadFolder(folder + '/' + rawName)
+      if (isDir) ret.children = loadFolder(ret.absPath, ret.path)
       return ret
     })
   result.sort((a, b) => a.order - b.order)
   return result
 }
+
+/**
+ * For `nuxt generate`
+ */
 let contentRoutes = getContentRoutes('', content)
 function getContentRoutes(prefix, context) {
   return context.reduce((result, dirent) => {
@@ -112,7 +129,8 @@ md.use(mip)
 export default {
   env: {
     content,
-    config
+    config,
+    pathMap
   },
   mode: 'universal',
   head: {

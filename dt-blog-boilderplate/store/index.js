@@ -1,8 +1,11 @@
 export default {
   state() {
     return {
+      // load env constants from nuxt config
       config: process.env.config,
       content: process.env.content,
+      pathMap: process.env.pathMap,
+      // other vars
       navs: [], // displayed in layouts/default.vue
       isDir: false, // whether current page is a directory
       rawPath: '', // markdown file raw path if current page is a markdown
@@ -18,7 +21,7 @@ export default {
       state.isDir = true
       state.context = context
     },
-    setNavs(state, navs){
+    setNavs(state, navs) {
       state.navs = navs
     }
   }

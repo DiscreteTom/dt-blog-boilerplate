@@ -15,7 +15,8 @@ export default {
   methods: {
     refresh() {
       if (this.$store.state.rawPath) {
-        import(`~/../content/${this.$store.state.rawPath}`).then(m => {
+        // rawPath: '/xxx/yyy'
+        import(`~/../content/${this.$store.state.rawPath.slice(1)}`).then(m => {
           this.attributes = m.attributes
           this.selectedArticle = m.vue.component
         })

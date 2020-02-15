@@ -9,7 +9,7 @@
 <script>
 /**
  * This page will handle all routes.
- * Path info is stored in `this.$route.params.pathMatch`
+ * Path info is stored in `this.$route.path`
  */
 import Markdown from '~/components/Markdown.vue'
 import Folder from '~/components/Folder.vue'
@@ -18,50 +18,43 @@ import BreadCrumbs from '~/components/BreadCrumbs.vue'
 export default {
   components: { Markdown, Folder, BreadCrumbs },
   methods: {
-    // calculate `this.navs`, `this.context`, `this.isDir`, `this.rawPath`
+    // calculate `navs`, `context`, `isDir`, `rawPath` in Vuex
     init() {
-      if (this.$route.params.pathMatch == '') {
+      if (this.$route.path == '/') {
         // redirect to the root object
         this.$router.push('/' + this.$store.state.config.root)
         return
       }
-      let navs = []
-      let paths = this.$route.params.pathMatch.split('/')
-      if (this.$route.params.pathMatch == '')
-        // current context is the root object
-        paths = [this.$store.state.config.root]
-      let context = this.$store.state.content
-      let result = []
-      let isDir = false
-      for (let i = 0; i < paths.length; ++i) {
-        let notFound = true
-        for (let j = 0; j < context.length; ++j) {
-          if (paths[i] == context[j].name) {
-            result.push(context[j].rawName)
-            navs.push({
-              text: context[j].name,
-              to: '/' + paths.slice(0, i + 1).join('/'),
-              exact: true
-            })
-            // get this.isDir
-            isDir = context[j].isDir
-            // refresh context
-            context = context[j].children
-            notFound = false
-            break
-          }
-        }
-        if (notFound) {
-          this.$router.push('/404')
-          return
-        }
+      let dirent = this.$store.state.pathMap[this.$route.path]
+      if (dirent == null) {
+        // redirect to 404
+        this.$router.puth('/404')
+        return
       }
       // change state
-      if (isDir) this.$store.commit('showFolder', context)
-      else this.$store.commit('showMarkdown', result.join('/'))
-      // if current context == root object, no navs
-      if (this.$route.params.pathMatch == '') this.$store.commit('setNavs', [])
-      else this.$store.commit('setNavs', navs)
+      if (dirent.isDir) {
+        this.$store.commit('showFolder', dirent.children)
+      } else {
+        this.$store.commit('showMarkdown', dirent.rawPath)
+      }
+      this.$store.commit(
+        'setNavs',
+        dirent.path // => '/xxx/xxx'
+          .split('/') // =>['', 'xxx', 'xxx]
+          .slice(1) // => ['xxx', 'xxx']
+          .reduce(
+            (result, name) => {
+              result.push({
+                text: name,
+                exact: true,
+                to: [result[result.length - 1].to, name].join('/')
+              })
+              return result
+            },
+            [{ text: '', exact: true, to: '' }]
+          )
+          .slice(1) // remove the '' route
+      )
     }
   },
   beforeRouteEnter(to, from, next) {
