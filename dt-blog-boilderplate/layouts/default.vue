@@ -3,11 +3,10 @@
     <v-navigation-drawer v-model="drawer" clipped app>
       <v-list>
         <v-list-item
-          v-for="(dirent, i) in $store.state.content"
+          v-for="(dirent, i) in $store.state.root.children"
           :key="i"
           :to="'/' + dirent.name"
           router
-          exact
         >
           <v-list-item-action>
             <v-icon>{{ dirent.icon }}</v-icon>
