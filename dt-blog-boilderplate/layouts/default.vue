@@ -3,7 +3,7 @@
     <v-navigation-drawer v-model="drawer" clipped fixed app>
       <v-list>
         <v-list-item
-          v-for="(dirent, i) in content"
+          v-for="(dirent, i) in $store.state.content"
           :key="i"
           :to="'/' + dirent.name"
           router
@@ -22,15 +22,19 @@
     </v-navigation-drawer>
     <v-app-bar clipped-left fixed app hide-on-scroll flat>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-toolbar-title v-text="config.title" />
+      <v-toolbar-title v-text="$store.state.config.title" />
       <BreadCrumbs class="d-none d-sm-flex"></BreadCrumbs>
 
       <v-spacer></v-spacer>
 
       <!-- Author Btn -->
-      <v-tooltip bottom v-if="config.author">
+      <v-tooltip bottom v-if="$store.state.config.author">
         <template v-slot:activator="{ on }">
-          <v-btn icon v-on="on" :href="'https://github.com/' + config.author">
+          <v-btn
+            icon
+            v-on="on"
+            :href="'https://github.com/' + $store.state.config.author"
+          >
             <v-avatar size="36">
               <img v-if="avatar" :src="avatar" />
               <v-progress-linear
@@ -42,30 +46,34 @@
             </v-avatar>
           </v-btn>
         </template>
-        <span>{{ config.author }}</span>
+        <span>{{ $store.state.config.author }}</span>
       </v-tooltip>
       <!-- Home Btn -->
       <v-tooltip bottom>
         <template v-slot:activator="{ on }">
-          <v-btn icon v-on="on" @click="$router.push('/' + config.root)">
+          <v-btn
+            icon
+            v-on="on"
+            @click="$router.push('/' + $store.state.config.root)"
+          >
             <v-icon>mdi-home</v-icon>
           </v-btn>
         </template>
         <span>Home</span>
       </v-tooltip>
       <!-- Github Btn -->
-      <v-tooltip bottom v-if="config.repo">
+      <v-tooltip bottom v-if="$store.state.config.repo">
         <template v-slot:activator="{ on }">
-          <v-btn icon v-on="on" :href="config.repo">
+          <v-btn icon v-on="on" :href="$store.state.config.repo">
             <v-icon>mdi-github-circle</v-icon>
           </v-btn>
         </template>
         <span>View source code</span>
       </v-tooltip>
       <!-- Email Btn -->
-      <v-tooltip bottom v-if="config.email">
+      <v-tooltip bottom v-if="$store.state.config.email">
         <template v-slot:activator="{ on }">
-          <v-btn icon v-on="on" :href="'mailto:' + config.email">
+          <v-btn icon v-on="on" :href="'mailto:' + $store.state.config.email">
             <v-icon>mdi-email</v-icon>
           </v-btn>
         </template>
@@ -117,9 +125,7 @@ export default {
       drawer: false,
       isMounted: false,
       snackbar: false,
-      avatar: '',
-      content: process.env.content,
-      config: process.env.config
+      avatar: ''
     }
   },
   computed: {
@@ -135,9 +141,9 @@ export default {
   mounted() {
     this.isMounted = true
     this.clipboard = new ClipboardJS('#shareBtn')
-    if (this.config.author) {
+    if (this.$store.state.config.author) {
       this.$axios
-        .$get('https://api.github.com/users/' + this.config.author)
+        .$get('https://api.github.com/users/' + this.$store.state.config.author)
         .then(data => (this.avatar = data.avatar_url))
     }
   },

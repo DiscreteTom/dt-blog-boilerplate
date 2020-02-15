@@ -17,26 +17,20 @@ import BreadCrumbs from '~/components/BreadCrumbs.vue'
 
 export default {
   components: { Markdown, Folder, BreadCrumbs },
-  data() {
-    return {
-      content: process.env.content,
-      config: process.env.config
-    }
-  },
   methods: {
     // calculate `this.navs`, `this.context`, `this.isDir`, `this.rawPath`
     init() {
       if (this.$route.params.pathMatch == '') {
         // redirect to the root object
-        this.$router.push('/' + this.config.root)
+        this.$router.push('/' + this.$store.state.config.root)
         return
       }
       let navs = []
       let paths = this.$route.params.pathMatch.split('/')
       if (this.$route.params.pathMatch == '')
         // current context is the root object
-        paths = [this.config.root]
-      let context = this.content
+        paths = [this.$store.state.config.root]
+      let context = this.$store.state.content
       let result = []
       let isDir = false
       for (let i = 0; i < paths.length; ++i) {
