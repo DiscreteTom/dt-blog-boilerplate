@@ -122,7 +122,7 @@ export default {
   data() {
     return {
       clipboard: null,
-      drawer: false,
+      drawer: true,
       isMounted: false,
       snackbar: false,
       avatar: ''
