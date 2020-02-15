@@ -7,7 +7,6 @@ export default {
       pathMap: process.env.pathMap,
       tagMap: process.env.tagMap,
       // other vars
-      ready: false, // routes are correct, ready to render
       navs: [], // displayed in components/BreadCrumbs
       current: process.env.root
     }
@@ -34,7 +33,6 @@ export default {
           [{ text: '', exact: true, to: '' }]
         )
         .slice(1) // remove the '' route
-      state.ready = true
     }
   }
 }

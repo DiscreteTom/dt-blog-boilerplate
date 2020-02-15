@@ -222,6 +222,9 @@ export default {
       }
     }
   },
+  router: {
+    middleware: 'root'
+  },
   build: {
     extend(config, ctx) {
       config.module.rules.push(
