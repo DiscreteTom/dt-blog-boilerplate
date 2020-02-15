@@ -9,7 +9,7 @@
       :key="i"
     >
       <v-icon class="mr-5">{{ dirent.icon }}</v-icon>
-      {{ dirent.name }}
+      {{ dirent.title }}
     </v-btn>
   </div>
 </template>

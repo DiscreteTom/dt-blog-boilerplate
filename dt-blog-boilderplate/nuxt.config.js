@@ -5,6 +5,7 @@ import yaml from 'js-yaml'
 import Mode from 'frontmatter-markdown-loader/mode'
 import MarkdownIt from 'markdown-it'
 import mip from 'markdown-it-prism'
+import matter from 'gray-matter'
 
 /**
  * Global config info in `_config.yml`
@@ -61,12 +62,16 @@ function loadFolder(absPath, path) {
     .readdirSync(absPath, { withFileTypes: true })
     .filter(dirent => !dirent.name.startsWith('_'))
     .map(dirent => {
+      // init some attribute
       let isDir = dirent.isDirectory()
       let rawName = dirent.name
       let orderDeciderIndex = rawName.indexOf(folderConfig.orderDecider)
       let order = 0
       let icon = isDir ? config.folderIcon : config.fileIcon
       let name = rawName
+      let currentAbsPath = [absPath, rawName].join('/') // '../content/xxx/yyy'
+      let currentRawPath = currentAbsPath.slice(10) // '/xxx/yyy'
+      // update name and order by orderDecider & file name suffix
       if (orderDeciderIndex !== -1) {
         // orderDecider exists
         let t = rawName.split(folderConfig.orderDecider)
@@ -79,18 +84,29 @@ function loadFolder(absPath, path) {
         }
         name = rawName.slice(orderDeciderIndex + 1)
       }
-      name = name.split('.')[0]
+      name = name.split('.')[0] // remove file name suffix
+      // if dirent is markdown, get markdown attributes, get title
+      // TODO: update icon?
+      // TODO: load tags
+      // TODO: load folder title?
+      let title = name
+      if (!isDir && rawName.endsWith('.md')) {
+        let attributes = matter(fs.readFileSync(currentAbsPath).toString()).data
+        title = attributes.title || title
+      }
       // update icon
       icon = folderConfig.icon[name] || icon
+      // construct result
       let ret = {
         isDir,
         icon,
         rawName,
-        name,
+        name, // in path
+        title, // for display
         children: [],
         order,
-        absPath: [absPath, rawName].join('/'), // '../content/xxx/yyy'
-        rawPath: [absPath, rawName].join('/').slice(10), // '/xxx/yyy'
+        absPath: currentAbsPath, // '../content/xxx/yyy'
+        rawPath: currentRawPath, // '/xxx/yyy'
         path: [path, name].join('/')
       }
       // update pathMap

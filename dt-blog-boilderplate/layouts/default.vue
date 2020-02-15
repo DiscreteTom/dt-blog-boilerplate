@@ -14,7 +14,7 @@
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>
-              {{ dirent.isDir ? dirent.name : dirent.name | removeExtension }}
+              {{ dirent.title }}
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
@@ -131,11 +131,6 @@ export default {
   computed: {
     url() {
       return this.isMounted ? window.location.href : ''
-    }
-  },
-  filters: {
-    removeExtension(s) {
-      return s.split('.')[0]
     }
   },
   mounted() {
