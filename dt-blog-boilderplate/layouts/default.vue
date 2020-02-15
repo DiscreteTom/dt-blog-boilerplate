@@ -60,6 +60,15 @@
         </template>
         <span>Home</span>
       </v-tooltip>
+      <!-- Tags Btn -->
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on }">
+          <v-btn icon v-on="on" @click="$router.push('/tags')">
+            <v-icon>mdi-tag-multiple</v-icon>
+          </v-btn>
+        </template>
+        <span>Tags</span>
+      </v-tooltip>
       <!-- Github Btn -->
       <v-tooltip bottom v-if="$store.state.config.repo">
         <template v-slot:activator="{ on }">

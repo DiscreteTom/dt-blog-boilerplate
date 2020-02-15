@@ -5,6 +5,7 @@ export default {
       config: process.env.config,
       root: process.env.root,
       pathMap: process.env.pathMap,
+      tagMap: process.env.tagMap,
       // other vars
       ready: false, // routes are correct, ready to render
       navs: [], // displayed in components/BreadCrumbs
