@@ -28,7 +28,7 @@ export default {
       let dirent = this.$store.state.pathMap[this.$route.path]
       if (dirent == null) {
         // redirect to 404
-        this.$router.puth('/404')
+        this.$router.push('/404')
         return
       }
       // change state
