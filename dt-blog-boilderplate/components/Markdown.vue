@@ -23,7 +23,7 @@ export default {
     }
   },
   watch: {
-    '$store.state.isDir': 'refresh'
+    '$store.state.rawPath': 'refresh'
   },
   created() {
     this.refresh()
