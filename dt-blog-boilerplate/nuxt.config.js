@@ -209,6 +209,11 @@ export default {
     '@nuxtjs/dotenv'
   ],
   pwa: {
+    meta: {
+      name: config.title,
+      author: config.author,
+      description: config.description
+    },
     manifest: {
       name: config.title
     }
