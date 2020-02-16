@@ -52,7 +52,8 @@ function loadFolder(absPath, path = '') {
     icon: config.folderIcon,
     orderDecider: config.orderDecider,
     title: '',
-    reverse: config.reverse
+    reverse: config.reverse,
+    description: ''
   }
   // update folderConfig if `_config.yml` exists
   let ymlContent = ''
@@ -104,7 +105,8 @@ function loadFolder(absPath, path = '') {
         order: childOrder,
         absPath: childAbsPath,
         rawPath: childRawPath,
-        path: childPath
+        path: childPath,
+        description: '' // if current is a folder, will be overwritten by parent
       }
       if (child.isDirectory()) {
         // if this child is a folder
@@ -125,6 +127,7 @@ function loadFolder(absPath, path = '') {
         // update result
         ret.icon = attributes.icon || config.fileIcon
         ret.title = attributes.title || childName
+        ret.description = attributes.description || ret.title
       }
       // update pathMap
       pathMap[ret.path] = ret
@@ -143,7 +146,8 @@ function loadFolder(absPath, path = '') {
     order: 0, // will be overwritten by parent
     absPath: '../content', // will be overwritten by parent
     rawPath: '/', // will be overwritten by parent
-    path: '/' // will be overwritten by parent
+    path: '/', // will be overwritten by parent
+    description: folderConfig.description || folderConfig.title
   }
   return result
 }

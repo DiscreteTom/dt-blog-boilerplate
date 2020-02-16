@@ -7,7 +7,14 @@
 <script>
 export default {
   head: {
-    title: '404'
+    title: '404',
+    meta: [
+      {
+        hid: 'description',
+        name: 'description',
+        content: '404 not found'
+      }
+    ]
   }
 }
 </script>

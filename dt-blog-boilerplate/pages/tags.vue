@@ -26,8 +26,17 @@
 
 <script>
 export default {
-  head: {
-    title: 'Tags'
+  head() {
+    return {
+      title: 'Tags',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: `Tags for ${this.$store.state.current.title}`
+        }
+      ]
+    }
   }
 }
 </script>
