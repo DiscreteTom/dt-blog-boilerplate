@@ -17,6 +17,9 @@ import BreadCrumbs from '~/components/BreadCrumbs.vue'
 
 export default {
   components: { Markdown, Folder, BreadCrumbs },
-  middleware:'content'
+  middleware: 'content',
+  head: {
+    title: this.$store.state.current.title
+  }
 }
 </script>

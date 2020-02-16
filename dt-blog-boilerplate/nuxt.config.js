@@ -23,7 +23,8 @@ let config = {
   folderIcon: 'mdi-folder-outline',
   fileIcon: 'mdi-file',
   orderDecider: '#',
-  reverse: false
+  reverse: false,
+  description: ''
 }
 let t = yaml.safeLoad(fs.readFileSync('../_config.yml', 'utf8')) || {}
 for (let key in config) {
@@ -179,15 +180,15 @@ export default {
   },
   mode: 'universal',
   head: {
-    titleTemplate: '%s - ' + process.env.npm_package_name,
-    title: process.env.npm_package_name || '',
+    titleTemplate: '%s - ' + config.title,
+    title: config.title,
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       {
         hid: 'description',
         name: 'description',
-        content: process.env.npm_package_description || ''
+        content: config.description || config.title
       }
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]

@@ -23,3 +23,11 @@
     </v-expansion-panels>
   </div>
 </template>
+
+<script>
+export default {
+  head: {
+    title: 'Tags'
+  }
+}
+</script>
