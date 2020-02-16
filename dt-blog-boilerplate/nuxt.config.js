@@ -19,7 +19,8 @@ let config = {
   author: '',
   folderIcon: 'mdi-folder-outline',
   fileIcon: 'mdi-file',
-  orderDecider: '#'
+  orderDecider: '#',
+  reverse: false
 }
 let t = yaml.safeLoad(fs.readFileSync('../_config.yml', 'utf8')) || {}
 for (let key in config) {
@@ -46,7 +47,8 @@ function loadFolder(absPath, path = '') {
   let folderConfig = {
     icon: config.folderIcon,
     orderDecider: config.orderDecider,
-    title: ''
+    title: '',
+    reverse: config.reverse
   }
   // update folderConfig if `_config.yml` exists
   let ymlContent = ''
@@ -124,7 +126,9 @@ function loadFolder(absPath, path = '') {
       pathMap[ret.path] = ret
       return ret
     })
-  children.sort((a, b) => a.order - b.order)
+  children.sort((a, b) =>
+    folderConfig.reverse ? a.order - b.order : b.order - a.order
+  )
   let result = {
     isDir: true,
     icon: folderConfig.icon,
