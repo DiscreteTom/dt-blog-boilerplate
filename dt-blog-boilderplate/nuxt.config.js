@@ -19,7 +19,7 @@ let config = {
   author: '',
   folderIcon: 'mdi-folder-outline',
   fileIcon: 'mdi-file',
-  orderDecider: '-'
+  orderDecider: '#'
 }
 let t = yaml.safeLoad(fs.readFileSync('../_config.yml', 'utf8')) || {}
 for (let key in config) {
