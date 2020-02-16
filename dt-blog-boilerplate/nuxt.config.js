@@ -11,6 +11,9 @@ import matter from 'gray-matter'
  * Global config info in `_config.yml`
  */
 let config = {
+  /**
+   * Application name
+   */
   title: "DiscreteTom's Blog Boilderplate",
   root: 'index',
   defaultLanguage: 'en',
@@ -200,6 +203,11 @@ export default {
     // Doc: https://github.com/nuxt-community/dotenv-module
     '@nuxtjs/dotenv'
   ],
+  pwa: {
+    manifest: {
+      name: config.title
+    }
+  },
   /*
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options
