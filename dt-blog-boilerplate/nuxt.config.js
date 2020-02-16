@@ -127,7 +127,7 @@ function loadFolder(absPath, path = '') {
       return ret
     })
   children.sort((a, b) =>
-    folderConfig.reverse ? a.order - b.order : b.order - a.order
+    folderConfig.reverse ? b.order - a.order : a.order - b.order
   )
   let result = {
     isDir: true,
