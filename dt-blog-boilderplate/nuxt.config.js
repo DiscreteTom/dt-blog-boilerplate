@@ -247,6 +247,6 @@ export default {
     }
   },
   generate: {
-    routes: contentRoutes.concat(['/'])
+    routes: contentRoutes.concat(['/', '/404', '/tags'])
   }
 }
