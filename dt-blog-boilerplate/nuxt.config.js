@@ -106,7 +106,7 @@ function loadFolder(absPath, path = '') {
         absPath: childAbsPath,
         rawPath: childRawPath,
         path: childPath,
-        description: '' // if current is a folder, will be overwritten by parent
+        description: '' // if current is a folder, will be overwritten below
       }
       if (child.isDirectory()) {
         // if this child is a folder
@@ -114,6 +114,7 @@ function loadFolder(absPath, path = '') {
         ret.icon = t.icon
         ret.title = t.title || childName
         ret.children = t.children
+        ret.description = t.description || ret.title
       } else {
         // this child is not a folder
         // get markdown attributes
@@ -147,7 +148,7 @@ function loadFolder(absPath, path = '') {
     absPath: '../content', // will be overwritten by parent
     rawPath: '/', // will be overwritten by parent
     path: '/', // will be overwritten by parent
-    description: folderConfig.description || folderConfig.title
+    description: folderConfig.description
   }
   return result
 }
