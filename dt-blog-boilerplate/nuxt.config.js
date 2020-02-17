@@ -53,7 +53,8 @@ function loadFolder(absPath, path = '') {
     orderDecider: config.orderDecider,
     title: '',
     reverse: config.reverse,
-    description: ''
+    description: '',
+    img: ''
   }
   // update folderConfig if `_config.yml` exists
   let ymlContent = ''
@@ -101,12 +102,13 @@ function loadFolder(absPath, path = '') {
         name: childName, // in path
         rawName: childRawName, // 'order-name.suffix'
         title: '', // for display, will be overwritten below.
-        children: [], // will be overwritten below
         order: childOrder,
         absPath: childAbsPath,
         rawPath: childRawPath,
         path: childPath,
-        description: '' // if current is a folder, will be overwritten below
+        description: '', // if current is a folder, will be overwritten below
+        img: '', // will be overwritten below
+        children: [] // will be overwritten below
       }
       if (child.isDirectory()) {
         // if this child is a folder
@@ -115,6 +117,7 @@ function loadFolder(absPath, path = '') {
         ret.title = t.title || childName
         ret.children = t.children
         ret.description = t.description || ret.title
+        ret.img = t.img
       } else {
         // this child is not a folder
         // get markdown attributes
@@ -129,6 +132,7 @@ function loadFolder(absPath, path = '') {
         ret.icon = attributes.icon || config.fileIcon
         ret.title = attributes.title || childName
         ret.description = attributes.description || ret.title
+        ret.img = attributes.img
       }
       // update pathMap
       pathMap[ret.path] = ret
@@ -143,12 +147,13 @@ function loadFolder(absPath, path = '') {
     rawName: '', // will be overwritten by parent
     name: '', // will be overwritten by parent
     title: folderConfig.title,
-    children,
     order: 0, // will be overwritten by parent
     absPath: '../content', // will be overwritten by parent
     rawPath: '/', // will be overwritten by parent
     path: '/', // will be overwritten by parent
-    description: folderConfig.description
+    description: folderConfig.description,
+    img: folderConfig.img,
+    children
   }
   return result
 }
