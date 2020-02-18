@@ -5,28 +5,22 @@
       :to="dirent.path"
       :style="{
         'background-image': `url(${imgSrc})`,
-        'background-position': 'right',
-        'background-size': '70%'
+        'background-position': imgPosition,
+        'background-size': imgSize
       }"
     >
-      <!-- background image mask -->
+      <!-- background image linear gradient mask -->
       <div
         :style="
-          dirent.img
-            ? {
-                'background-image': 'linear-gradient(to right, #fff, #0000)',
-                'background-position': 'right',
-                'background-size': '70%'
-              }
-            : {}
+          dirent.img && {
+            'background-image': 'linear-gradient(to right, #fff, #0000)',
+            'background-position': imgPosition,
+            'background-size': imgSize
+          }
         "
       >
         <!-- hover shadow mask -->
-        <div
-          :style="{
-            'background-color': hover ? '#0000000d' : undefined
-          }"
-        >
+        <div :style="hover && `background-color:${hoverColor}`">
           <v-card-title>
             <v-icon class="mr-5">{{ dirent.icon }}</v-icon>
             {{ dirent.title }}
@@ -48,6 +42,9 @@ export default {
   },
   data() {
     return {
+      hoverColor: '#0000000d',
+      imgPosition: 'right',
+      imgSize: '70%',
       imgSrc: ''
     }
   },
