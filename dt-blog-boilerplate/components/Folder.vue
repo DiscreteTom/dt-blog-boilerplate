@@ -1,8 +1,8 @@
 <template>
   <div>
     <DirentCard
-      v-for="(dirent, i) in $store.state.current.children"
-      :key="i"
+      v-for="dirent in $store.state.current.children"
+      :key="dirent.path"
       :dirent="dirent"
     >
     </DirentCard>

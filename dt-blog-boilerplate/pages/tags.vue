@@ -11,8 +11,8 @@
             block
             x-large
             class="justify-start"
-            v-for="(path, i) in paths"
-            :key="i"
+            v-for="path in paths"
+            :key="path"
             :to="path"
           >
             <v-icon class="mr-5">{{ $store.state.pathMap[path].icon }}</v-icon>
