@@ -22,7 +22,7 @@ let config = {
   author: '',
   folderIcon: 'mdi-folder-outline',
   fileIcon: 'mdi-file',
-  orderDecider: '#',
+  orderDecider: '@',
   reverse: false,
   description: ''
 }
