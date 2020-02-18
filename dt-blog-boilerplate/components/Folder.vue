@@ -36,7 +36,7 @@ export default {
       this.$store.state.current.children.map((dirent, i) => {
         if (dirent.img) {
           import(
-            `~/../content/${dirent.path
+            `~/../content/${dirent.rawPath
               .split('/')
               .slice(1, -1)
               .join('/')}/_img/${dirent.img}`
