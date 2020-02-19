@@ -24,6 +24,15 @@
           <v-card-title>
             <v-icon class="mr-5">{{ dirent.icon }}</v-icon>
             {{ dirent.title }}
+            <v-chip
+              class="ml-2"
+              small
+              v-for="tag in dirent.tags"
+              :key="tag"
+              @click.stop.prevent="$router.push('/tags/' + tag)"
+            >
+              {{ tag }}
+            </v-chip>
             <v-icon v-if="dirent.isDir">mdi-chevron-right</v-icon>
           </v-card-title>
           <v-card-subtitle>
