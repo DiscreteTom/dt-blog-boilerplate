@@ -1,5 +1,12 @@
 <template>
   <div>
+    <!-- header -->
+    <div class="ml-5 mb-5">
+      <h1>
+        Tags
+        <v-icon>mdi-chevron-right</v-icon>
+      </h1>
+    </div>
     <v-expansion-panels accordion tile hover>
       <v-expansion-panel
         v-for="(paths, tagName) in $store.state.tagMap"
