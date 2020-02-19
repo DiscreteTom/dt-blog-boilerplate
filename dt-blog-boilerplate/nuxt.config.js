@@ -54,6 +54,7 @@ function loadFolder(absPath, path = '') {
     title: '',
     reverse: config.reverse,
     description: '',
+    tags: [],
     img: ''
   }
   // update folderConfig if `_config.yml` exists
@@ -108,6 +109,7 @@ function loadFolder(absPath, path = '') {
         path: childPath,
         description: '', // if current is a folder, will be overwritten below
         img: '', // will be overwritten below
+        tags: [], // will be overwritten below
         children: [] // will be overwritten below
       }
       if (child.isDirectory()) {
@@ -118,22 +120,23 @@ function loadFolder(absPath, path = '') {
         ret.children = t.children
         ret.description = t.description || ret.title
         ret.img = t.img
+        ret.tags = t.tags
       } else {
         // this child is not a folder
         // get markdown attributes
         let attributes = matter(fs.readFileSync(childAbsPath).toString()).data
-        // get tags
-        if (attributes.tags)
-          attributes.tags.map(tag => {
-            if (tagMap[tag]) tagMap[tag].push(childPath)
-            else tagMap[tag] = [childPath]
-          })
         // update result
         ret.icon = attributes.icon || config.fileIcon
         ret.title = attributes.title || childName
         ret.description = attributes.description || ret.title
         ret.img = attributes.img
+        ret.tags = attributes.tags || []
       }
+      // update tagMap
+      ret.tags.map(tag => {
+        if (tagMap[tag]) tagMap[tag].push(ret.path)
+        else tagMap[tag] = [ret.path]
+      })
       // update pathMap
       pathMap[ret.path] = ret
       return ret
@@ -153,6 +156,7 @@ function loadFolder(absPath, path = '') {
     path: '/', // will be overwritten by parent
     description: folderConfig.description,
     img: folderConfig.img,
+    tags: folderConfig.tags,
     children
   }
   return result
