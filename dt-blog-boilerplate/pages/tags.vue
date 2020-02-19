@@ -7,17 +7,11 @@
       >
         <v-expansion-panel-header>{{ tagName }}</v-expansion-panel-header>
         <v-expansion-panel-content>
-          <v-btn
-            block
-            x-large
-            class="justify-start"
+          <DirentCard
             v-for="path in paths"
             :key="path"
-            :to="path"
-          >
-            <v-icon class="mr-5">{{ $store.state.pathMap[path].icon }}</v-icon>
-            {{ $store.state.pathMap[path].title }}
-          </v-btn>
+            :dirent="$store.state.pathMap[path]"
+          ></DirentCard>
         </v-expansion-panel-content>
       </v-expansion-panel>
     </v-expansion-panels>
@@ -25,7 +19,10 @@
 </template>
 
 <script>
+import DirentCard from '~/components/DirentCard.vue'
+
 export default {
+  components: { DirentCard },
   head() {
     return {
       title: 'Tags',
