@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-navigation-drawer v-model="drawer" clipped app>
-      <div class="d-flex d-sm-none">
+      <div class="hidden-md-and-up">
         <v-list-item>
           <v-list-item-content>
             <v-list-item-title class="title">
@@ -14,7 +14,7 @@
 
       <v-list>
         <!-- TOC -->
-        <div class="hidden-md-and-up mb-5">
+        <div v-if="$store.state.current.toc" class="hidden-md-and-up mb-5">
           <v-list-item @click="toggleToc">
             <v-list-item-action>
               <v-icon>mdi-table-of-contents</v-icon>
