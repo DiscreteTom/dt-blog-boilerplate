@@ -207,6 +207,13 @@ function getContentRoutes(prefix, context) {
     return result.concat(current.map(v => [prefix, v].join('/')))
   }, [])
 }
+let tagsRoutes = (function() {
+  let result = []
+  for (let key in tagMap) {
+    result.push('/tags/' + key)
+  }
+  return result
+})()
 
 /**
  * Markdown renderer
@@ -312,6 +319,6 @@ export default {
     }
   },
   generate: {
-    routes: contentRoutes.concat(['/', '/404', '/tags'])
+    routes: contentRoutes.concat(['/', '/404', '/tags']).concat(tagsRoutes)
   }
 }
