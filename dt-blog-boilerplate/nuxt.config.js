@@ -137,7 +137,32 @@ function loadFolder(absPath, path = '') {
         ret.tags = attributes.tags || []
         ret.toc = attributes.toc == null ? true : attributes.toc
         // get toc
-        if (ret.toc) ret.children = toc(mdFileContent).json
+        if (ret.toc) {
+          ret.children = toc(mdFileContent).json
+          // get max level
+          let maxLvl = 0
+          let minLvl = 0
+          ret.children.map(child => {
+            if (child.lvl > maxLvl) maxLvl = child.lvl
+            if (!minLvl || child.lvl < minLvl) minLvl = child.lvl
+          })
+          // fix children level
+          if (maxLvl == minLvl) {
+            // if all children have the same level
+            // consider them as level 2 to optimize ui
+            ret.children = ret.children.map(child => {
+              child.lvl = 2
+              return child
+            })
+          } else {
+            // if children have many different levels
+            // make sure children levels start from 1
+            ret.children = ret.children.map(child => {
+              child.lvl = child.lvl - minLvl + 1
+              return child
+            })
+          }
+        }
       }
       // update tagMap
       ret.tags.map(tag => {
