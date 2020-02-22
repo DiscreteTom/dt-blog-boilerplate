@@ -22,6 +22,7 @@
     "less": "^3.11.1",
     "less-loader": "^5.0.0",
     "markdown-it": "^10.0.0",
+    "markdown-it-anchor": "^5.2.5",
     "markdown-it-prism": "^2.0.3",
     "markdown-toc": "^1.2.0",
     "nuxt": "^2.0.0",
