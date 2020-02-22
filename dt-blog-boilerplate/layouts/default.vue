@@ -13,6 +13,28 @@
       </div>
 
       <v-list>
+        <!-- TOC -->
+        <div class="hidden-md-and-up mb-5">
+          <v-list-item @click="toggleToc">
+            <v-list-item-action>
+              <v-icon>mdi-table-of-contents</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>
+                TOC
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-expansion-panels accordion flat v-model="showToc">
+            <v-expansion-panel>
+              <v-expansion-panel-content>
+                <TOC></TOC>
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+          </v-expansion-panels>
+          <v-divider></v-divider>
+        </div>
+        <!-- navs -->
         <v-list-item
           v-for="(dirent, i) in $store.state.root.children"
           :key="i"
@@ -138,16 +160,24 @@
 <script>
 import ClipboardJS from 'clipboard'
 import BreadCrumbs from '~/components/BreadCrumbs.vue'
+import TOC from '~/components/TOC.vue'
 
 export default {
-  components: { BreadCrumbs },
+  components: { BreadCrumbs, TOC },
   data() {
     return {
       clipboard: null,
       drawer: true,
       isMounted: false,
       snackbar: false,
-      avatar: ''
+      avatar: '',
+      showToc: -1 // 0 means show toc. This is the index of v-expansion-panels.
+    }
+  },
+  methods: {
+    toggleToc() {
+      if (this.showToc == -1) this.showToc = 0
+      else this.showToc = -1
     }
   },
   computed: {
