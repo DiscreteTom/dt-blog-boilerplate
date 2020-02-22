@@ -26,6 +26,7 @@
     "markdown-it-prism": "^2.0.3",
     "markdown-toc": "^1.2.0",
     "nuxt": "^2.0.0",
+    "uslug": "^1.0.4",
     "yaml-loader": "^0.5.0"
   },
   "devDependencies": {
