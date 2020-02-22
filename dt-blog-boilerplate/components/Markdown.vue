@@ -10,7 +10,7 @@
     <v-row class="flex-row-reverse">
       <!-- TOC -->
       <v-col cols="3">
-        <v-list dense v-if="!$store.state.current.isDir">
+        <v-list dense v-if="$store.state.current.toc">
           <v-subheader>TOC</v-subheader>
           <v-list-item
             v-for="(t, i) in $store.state.current.children"
