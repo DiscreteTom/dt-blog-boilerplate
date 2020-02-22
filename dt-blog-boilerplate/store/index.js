@@ -33,6 +33,8 @@ export default {
           [{ text: '', exact: true, to: '' }]
         )
         .slice(1) // remove the '' route
+        // the last nav is not exact, it allows `#`
+      state.navs[state.navs.length - 1].exact = false
     }
   }
 }
