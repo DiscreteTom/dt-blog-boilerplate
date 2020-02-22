@@ -133,8 +133,9 @@ function loadFolder(absPath, path = '') {
         ret.description = attributes.description || ret.title
         ret.img = attributes.img
         ret.tags = attributes.tags || []
+        ret.toc = attributes.toc == null ? true : attributes.toc
         // get toc
-        ret.children = toc(mdFileContent).json
+        if (ret.toc) ret.children = toc(mdFileContent).json
       }
       // update tagMap
       ret.tags.map(tag => {
