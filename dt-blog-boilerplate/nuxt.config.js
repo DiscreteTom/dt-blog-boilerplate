@@ -6,6 +6,7 @@ import Mode from 'frontmatter-markdown-loader/mode'
 import MarkdownIt from 'markdown-it'
 import mip from 'markdown-it-prism'
 import matter from 'gray-matter'
+import toc from 'markdown-toc'
 
 /**
  * Global config info in `_config.yml`
@@ -124,13 +125,16 @@ function loadFolder(absPath, path = '') {
       } else {
         // this child is not a folder
         // get markdown attributes
-        let attributes = matter(fs.readFileSync(childAbsPath).toString()).data
+        let mdFileContent = fs.readFileSync(childAbsPath).toString()
+        let attributes = matter(mdFileContent).data
         // update result
         ret.icon = attributes.icon || config.fileIcon
         ret.title = attributes.title || childName
         ret.description = attributes.description || ret.title
         ret.img = attributes.img
         ret.tags = attributes.tags || []
+        // get toc
+        ret.children = toc(mdFileContent).json
       }
       // update tagMap
       ret.tags.map(tag => {
