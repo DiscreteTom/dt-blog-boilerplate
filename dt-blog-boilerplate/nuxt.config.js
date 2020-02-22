@@ -5,6 +5,7 @@ import yaml from 'js-yaml'
 import Mode from 'frontmatter-markdown-loader/mode'
 import MarkdownIt from 'markdown-it'
 import mip from 'markdown-it-prism'
+import mia from 'markdown-it-anchor'
 import matter from 'gray-matter'
 import toc from 'markdown-toc'
 
@@ -188,7 +189,7 @@ const md = new MarkdownIt({
   html: true,
   typographer: true
 })
-md.use(mip)
+md.use(mip).use(mia)
 
 export default {
   env: {
