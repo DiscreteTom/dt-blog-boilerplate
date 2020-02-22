@@ -15,7 +15,7 @@
           <v-list-item
             v-for="(t, i) in $store.state.current.children"
             :key="i"
-            :to="'#' + t.slug"
+            @click="$vuetify.goTo('#' + t.slug)"
           >
             <v-list-item-content>
               <v-list-item-title>
