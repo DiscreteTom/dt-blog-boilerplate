@@ -1,7 +1,10 @@
 <template>
   <v-list dense v-if="$store.state.current.toc">
-    <v-subheader>TOC</v-subheader>
-    <div class="toc-content">
+    <v-subheader v-if="header">TOC</v-subheader>
+    <div
+      class="toc-content"
+      :style="restrict ? { 'max-height': '500px', overflow: 'auto' } : {}"
+    >
       <v-list-item
         v-for="(t, i) in $store.state.current.children"
         :key="i"
@@ -18,21 +21,9 @@
   </v-list>
 </template>
 
-<style lang="less" scoped>
-.toc-content {
-  max-height: 500px;
-  overflow: auto;
-  &::-webkit-scrollbar {
-    width: 5px;
-  }
-
-  &::-webkit-scrollbar-track {
-    border-radius: 2px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    border-radius: 2px;
-    background-color: #ccc;
-  }
+<script>
+export default {
+  props: { restrict: Boolean, header: Boolean }
 }
-</style>
+</script>
+
