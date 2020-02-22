@@ -7,16 +7,16 @@
       </h1>
       <p class="text--secondary">{{ $store.state.current.description }}</p>
     </div>
-    <v-row class="flex-row-reverse">
-      <!-- TOC -->
-      <v-col cols="3">
-        <TOC></TOC>
-      </v-col>
+    <v-row>
       <!-- Content -->
       <v-col>
         <div class="content mx-5">
           <component :is="selectedArticle" />
         </div>
+      </v-col>
+      <!-- right TOC, hide when small  -->
+      <v-col cols="3" class="hidden-sm-and-down">
+        <TOC style="position:fixed"></TOC>
       </v-col>
     </v-row>
   </div>
