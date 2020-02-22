@@ -8,6 +8,7 @@ import mip from 'markdown-it-prism'
 import mia from 'markdown-it-anchor'
 import matter from 'gray-matter'
 import toc from 'markdown-toc'
+import uslug from 'uslug'
 
 /**
  * Global config info in `_config.yml`
@@ -189,7 +190,8 @@ const md = new MarkdownIt({
   html: true,
   typographer: true
 })
-md.use(mip).use(mia)
+const uslugify = s => uslug(s)
+md.use(mip).use(mia, { slugify: uslugify })
 
 export default {
   env: {
