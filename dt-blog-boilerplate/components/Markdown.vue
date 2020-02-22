@@ -7,9 +7,32 @@
       </h1>
       <p class="text--secondary">{{ $store.state.current.description }}</p>
     </div>
-    <div class="content">
-      <component :is="selectedArticle" />
-    </div>
+    <v-row class="flex-row-reverse">
+      <!-- TOC -->
+      <v-col cols="3">
+        <v-list dense v-if="!$store.state.current.isDir">
+          <v-subheader>TOC</v-subheader>
+          <v-list-item
+            v-for="(t, i) in $store.state.current.children"
+            :key="i"
+            :to="'#' + t.slug"
+          >
+            <v-list-item-content>
+              <v-list-item-title>
+                <span v-for="x in t.lvl - 1" :key="x"> - </span>
+                {{ t.content }}
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+      </v-col>
+      <!-- Content -->
+      <v-col>
+        <div class="content mx-5">
+          <component :is="selectedArticle" />
+        </div>
+      </v-col>
+    </v-row>
   </div>
 </template>
 
