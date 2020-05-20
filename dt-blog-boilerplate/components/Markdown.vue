@@ -10,7 +10,7 @@
     <v-row>
       <!-- Content -->
       <v-col>
-        <div class="content mx-5">
+        <div class="content mx-5 markdown-body">
           <component :is="selectedArticle" />
         </div>
       </v-col>

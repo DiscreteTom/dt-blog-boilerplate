@@ -248,7 +248,7 @@ export default {
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
   },
   loading: { color: '#fff' },
-  css: ['@/assets/prettier-scroll-bar.less'],
+  css: ['@/assets/prettier-scroll-bar.less', '@/assets/github.css'],
   plugins: [],
   buildModules: ['@nuxtjs/vuetify'],
   modules: [
