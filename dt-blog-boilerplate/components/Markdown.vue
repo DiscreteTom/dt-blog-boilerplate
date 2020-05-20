@@ -53,15 +53,3 @@ export default {
   }
 }
 </script>
-
-<style lang="less" scoped>
-// ref: https://vue-loader.vuejs.org/guide/scoped-css.html#deep-selectors
-// ref: https://github.com/less/less.js/issues/2623
-@deep: ~'>>>';
-.content @{deep} {
-  // style of markdown content
-  img {
-    width: 100%;
-  }
-}
-</style>
