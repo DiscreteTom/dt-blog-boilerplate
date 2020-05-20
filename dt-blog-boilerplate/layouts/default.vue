@@ -109,7 +109,7 @@
       <v-tooltip bottom v-if="$store.state.config.repo">
         <template v-slot:activator="{ on }">
           <v-btn icon v-on="on" :href="$store.state.config.repo">
-            <v-icon>mdi-github-circle</v-icon>
+            <v-icon>mdi-github</v-icon>
           </v-btn>
         </template>
         <span>View source code</span>
