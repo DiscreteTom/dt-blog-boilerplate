@@ -251,7 +251,7 @@ export default {
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
   },
-  loading: { color: '#fff' },
+  loading: { color: 'gray', throttle: 50 },
   css: [
     '@/assets/prettier-scroll-bar.less',
     '@/assets/github.css',
