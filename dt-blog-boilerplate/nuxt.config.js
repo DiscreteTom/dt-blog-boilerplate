@@ -19,7 +19,6 @@ let config = {
    */
   title: "DiscreteTom's Blog Boilderplate",
   root: 'index',
-  defaultLanguage: 'en',
   repo: '',
   email: '',
   author: '',
