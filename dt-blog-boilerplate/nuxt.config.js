@@ -10,6 +10,9 @@ import matter from 'gray-matter'
 import toc from 'markdown-toc'
 import uslug from 'uslug'
 
+import loadLanguages from 'prismjs/components/'
+loadLanguages()
+
 /**
  * Global config info in `_config.yml`
  */
@@ -19,7 +22,6 @@ let config = {
    */
   title: "DiscreteTom's Blog Boilderplate",
   root: 'index',
-  defaultLanguage: 'en',
   repo: '',
   email: '',
   author: '',
@@ -77,9 +79,9 @@ function loadFolder(absPath, path = '') {
   // construct children
   let children = fs
     .readdirSync(absPath, { withFileTypes: true })
-    .filter(dirent => !dirent.name.startsWith('_')) // ignore some dirents
+    .filter(dirent => !dirent.name.startsWith('_')) // ignore dirents starts with `_`
     .map(child => {
-      let childRawName = child.name // => 'order-name.suffix'
+      let childRawName = child.name // => 'order@name.suffix'
       let childAbsPath = [absPath, childRawName].join('/') // '../content/rawName1/rawName2'
       let childRawPath = childAbsPath.slice(10) // '/rawName1/rawName2'
       let childOrder = 0
@@ -93,7 +95,7 @@ function loadFolder(absPath, path = '') {
           childOrder = Number(t[0])
           if (isNaN(childOrder))
             throw new Error(
-              `Invalid file name, please check orderDecider: ${absPath}/${childRawName}`
+              `Invalid file name, please check the orderDecider of: ${childRawPath}`
             )
         }
         childName = childRawName.slice(orderDeciderIndex + 1)
@@ -102,18 +104,18 @@ function loadFolder(absPath, path = '') {
       let childPath = [path, childName].join('/')
       let ret = {
         isDir: child.isDirectory(),
-        icon: '', // will be overwritten below
+        icon: '', // will be overwrote below
         name: childName, // in path
-        rawName: childRawName, // 'order-name.suffix'
-        title: '', // for display, will be overwritten below.
+        rawName: childRawName, // 'order@name.suffix'
+        title: '', // for display, will be overwrote below.
         order: childOrder,
         absPath: childAbsPath,
         rawPath: childRawPath,
         path: childPath,
-        description: '', // if current is a folder, will be overwritten below
-        img: '', // will be overwritten below
-        tags: [], // will be overwritten below
-        children: [] // will be overwritten below
+        description: '', // if current is a folder, will be overwrote below
+        img: '', // will be overwrote below
+        tags: [], // will be overwrote below
+        children: [] // will be overwrote below
       }
       if (child.isDirectory()) {
         // if this child is a folder
@@ -223,7 +225,9 @@ const md = new MarkdownIt({
   typographer: true
 })
 const uslugify = s => uslug(s)
-md.use(mip).use(mia, { slugify: uslugify })
+md.use(mip, {
+  defaultLanguage: 'bash'
+}).use(mia, { slugify: uslugify })
 
 export default {
   env: {
@@ -248,7 +252,11 @@ export default {
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
   },
   loading: { color: '#fff' },
-  css: ['@/assets/prettier-scroll-bar.less', '@/assets/github.css'],
+  css: [
+    '@/assets/prettier-scroll-bar.less',
+    '@/assets/github.css',
+    '@/assets/prism.min.css'
+  ],
   plugins: [],
   buildModules: ['@nuxtjs/vuetify'],
   modules: [
@@ -279,20 +287,7 @@ export default {
    */
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
-    theme: {
-      // dark: true,
-      themes: {
-        dark: {
-          primary: colors.blue.darken2,
-          accent: colors.grey.darken3,
-          secondary: colors.amber.darken3,
-          info: colors.teal.lighten1,
-          warning: colors.amber.base,
-          error: colors.deepOrange.accent4,
-          success: colors.green.accent3
-        }
-      }
-    }
+    treeShake: true
   },
   router: {
     middleware: 'root'

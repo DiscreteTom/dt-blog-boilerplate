@@ -24,6 +24,7 @@
 
 <script>
 import TOC from './TOC'
+
 export default {
   components: { TOC },
   data() {
@@ -53,3 +54,23 @@ export default {
   }
 }
 </script>
+
+<style lang="less" scoped>
+// ref: https://vue-loader.vuejs.org/guide/scoped-css.html#deep-selectors
+// ref: https://github.com/less/less.js/issues/2623
+@deep: ~'>>>';
+.content @{deep} {
+  // style of markdown content
+  code {
+    color: #000;
+    font-size: 85%;
+    box-shadow: none;
+    font-weight: normal;
+    &:after,
+    &:before {
+      content: none;
+      letter-spacing: none;
+    }
+  }
+}
+</style>
