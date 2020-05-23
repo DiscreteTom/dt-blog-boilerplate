@@ -9,7 +9,7 @@
             {{ $store.state.current.title }}
           </h1>
           <p class="text--secondary">{{ $store.state.current.description }}</p>
-          <img v-if="imgSrc" :src="imgSrc" />
+          <img v-if="imgSrc" :src="imgSrc" style="max-width:100%" />
         </div>
         <div class="content mx-5 markdown-body">
           <component :is="selectedArticle" />
