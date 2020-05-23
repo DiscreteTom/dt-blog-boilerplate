@@ -13,7 +13,7 @@
       <div
         :style="
           dirent.img && {
-            'background-image': 'linear-gradient(to right, #fff, #0000)',
+            'background-image': 'linear-gradient(to right, #fff, #ffffff33)',
             'background-position': imgPosition,
             'background-size': imgSize
           }
@@ -53,7 +53,7 @@ export default {
     return {
       hoverColor: '#0000000d',
       imgPosition: 'right',
-      imgSize: '70%',
+      imgSize: 'cover',
       imgSrc: ''
     }
   },
