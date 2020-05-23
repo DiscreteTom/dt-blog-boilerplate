@@ -76,9 +76,9 @@ function loadFolder(absPath, path = '') {
   // construct children
   let children = fs
     .readdirSync(absPath, { withFileTypes: true })
-    .filter(dirent => !dirent.name.startsWith('_')) // ignore some dirents
+    .filter(dirent => !dirent.name.startsWith('_')) // ignore dirents starts with `_`
     .map(child => {
-      let childRawName = child.name // => 'order-name.suffix'
+      let childRawName = child.name // => 'order@name.suffix'
       let childAbsPath = [absPath, childRawName].join('/') // '../content/rawName1/rawName2'
       let childRawPath = childAbsPath.slice(10) // '/rawName1/rawName2'
       let childOrder = 0
@@ -92,7 +92,7 @@ function loadFolder(absPath, path = '') {
           childOrder = Number(t[0])
           if (isNaN(childOrder))
             throw new Error(
-              `Invalid file name, please check orderDecider: ${absPath}/${childRawName}`
+              `Invalid file name, please check the orderDecider of: ${childRawPath}`
             )
         }
         childName = childRawName.slice(orderDeciderIndex + 1)
@@ -101,18 +101,18 @@ function loadFolder(absPath, path = '') {
       let childPath = [path, childName].join('/')
       let ret = {
         isDir: child.isDirectory(),
-        icon: '', // will be overwritten below
+        icon: '', // will be overwrote below
         name: childName, // in path
-        rawName: childRawName, // 'order-name.suffix'
-        title: '', // for display, will be overwritten below.
+        rawName: childRawName, // 'order@name.suffix'
+        title: '', // for display, will be overwrote below.
         order: childOrder,
         absPath: childAbsPath,
         rawPath: childRawPath,
         path: childPath,
-        description: '', // if current is a folder, will be overwritten below
-        img: '', // will be overwritten below
-        tags: [], // will be overwritten below
-        children: [] // will be overwritten below
+        description: '', // if current is a folder, will be overwrote below
+        img: '', // will be overwrote below
+        tags: [], // will be overwrote below
+        children: [] // will be overwrote below
       }
       if (child.isDirectory()) {
         // if this child is a folder
