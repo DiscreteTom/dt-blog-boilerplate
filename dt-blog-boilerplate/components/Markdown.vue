@@ -1,15 +1,16 @@
 <template>
   <div>
-    <!-- header -->
-    <div class="ml-5">
-      <h1>
-        {{ $store.state.current.title }}
-      </h1>
-      <p class="text--secondary">{{ $store.state.current.description }}</p>
-    </div>
     <v-row>
       <!-- Content -->
       <v-col>
+        <!-- header -->
+        <div class="ml-5">
+          <h1>
+            {{ $store.state.current.title }}
+          </h1>
+          <p class="text--secondary">{{ $store.state.current.description }}</p>
+          <img v-if="imgSrc" :src="imgSrc" />
+        </div>
         <div class="content mx-5 markdown-body">
           <component :is="selectedArticle" />
         </div>
@@ -30,12 +31,14 @@ export default {
   data() {
     return {
       attributes: {},
-      selectedArticle: null
+      selectedArticle: null,
+      imgSrc: ''
     }
   },
   methods: {
     refresh() {
       if (!this.$store.state.current.isDir) {
+        // load markdown
         // rawPath: '/xxx/yyy'
         import(
           `~/../content/${this.$store.state.current.rawPath.slice(1)}`
@@ -43,6 +46,18 @@ export default {
           this.attributes = m.attributes
           this.selectedArticle = m.vue.component
         })
+        // load title img
+        this.imgSrc = ''
+        if (this.$store.state.current.img) {
+          import(
+            `~/../content/${this.$store.state.current.rawPath
+              .split('/')
+              .slice(1, -1)
+              .join('/')}/_img/${this.$store.state.current.img}`
+          ).then(data => {
+            this.imgSrc = data.default
+          })
+        }
       }
     }
   },
