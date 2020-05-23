@@ -30,50 +30,59 @@ In the source branch, create a file `.github/workflows/main.yml` with the follow
 name: Github Pages
 on:
   push:
-    branches: 
+    branches:
       - source # your source branch name
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: setup node
-      uses: actions/setup-node@master
-    
-    - name: checkout boilerplate
-      uses: actions/checkout@v2
-      with:
-        repository: DiscreteTom/dt-blog-boilerplate # ref to this repo
-        path: boilerplateRepo
-        persist-credentials: false
-      
-    - name: checkout blog
-      uses: actions/checkout@v2
-      with:
-        ref: source # your source branch
-        path: contentRepo
-        persist-credentials: false
-       
-    - name: cache
-      uses: actions/cache@v1
-      with:
-        path: ~/.npm
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-node-
-        
-    - name: npm install & generate
-      run: |
-        cp -r contentRepo/* boilerplateRepo
-        cd boilerplateRepo/dt-blog-boilerplate
-        npm install
-        npm run generate
+      - name: setup node
+        uses: actions/setup-node@master
 
-    - name: deploy
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        personal_token: ${{ secrets.GH_PAT }} # personal access token
-        publish_branch: master # target branch
-        publish_dir: boilerplateRepo/dt-blog-boilerplate/dist 
+      - name: checkout boilerplate
+        uses: actions/checkout@v2
+        with:
+          repository: DiscreteTom/dt-blog-boilerplate
+          path: boilerplateRepo
+          persist-credentials: false
+
+      - name: checkout blog
+        uses: actions/checkout@v2
+        with:
+          ref: source # your source branch name
+          path: contentRepo
+          persist-credentials: false
+
+      - name: cache
+        id: cache
+        uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: move content
+        run: |
+          cp -r contentRepo/* boilerplateRepo
+
+      - name: install if cache miss
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+          cd boilerplateRepo/dt-blog-boilerplate
+          npm install
+
+      - name: generate
+        run: |
+          cd boilerplateRepo/dt-blog-boilerplate
+          npm run generate
+
+      - name: deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          personal_token: ${{ secrets.GH_PAT }} # your personal access token
+          publish_branch: master # target branch
+          publish_dir: boilerplateRepo/dt-blog-boilerplate/dist
 ```
 
 ### Organize your content
