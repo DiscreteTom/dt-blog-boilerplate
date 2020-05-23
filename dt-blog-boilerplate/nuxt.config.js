@@ -199,15 +199,9 @@ function loadFolder(absPath, path = '') {
 /**
  * For `nuxt generate`
  */
-let contentRoutes = getContentRoutes('', root.children)
-function getContentRoutes(prefix, context) {
-  return context.reduce((result, dirent) => {
-    let current = [dirent.name]
-    if (dirent.isDir) {
-      current = current.concat(getContentRoutes(dirent.name, dirent.children))
-    }
-    return result.concat(current.map(v => [prefix, v].join('/')))
-  }, [])
+let contentRoutes = []
+for (let key in pathMap) {
+  contentRoutes.push(key)
 }
 let tagsRoutes = (function() {
   let result = []
