@@ -22,7 +22,7 @@
         <!-- hover shadow mask -->
         <div :style="hover && `background-color:${hoverColor}`">
           <v-card-title>
-            <v-icon class="mr-5">{{ dirent.icon }}</v-icon>
+            <v-icon style="margin-right:1%">{{ dirent.icon }}</v-icon>
             {{ dirent.title }}
             <v-chip
               class="ml-2"
