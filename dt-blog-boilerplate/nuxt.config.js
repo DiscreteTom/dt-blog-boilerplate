@@ -10,6 +10,9 @@ import matter from 'gray-matter'
 import toc from 'markdown-toc'
 import uslug from 'uslug'
 
+import loadLanguages from 'prismjs/components/'
+loadLanguages()
+
 /**
  * Global config info in `_config.yml`
  */
@@ -222,7 +225,9 @@ const md = new MarkdownIt({
   typographer: true
 })
 const uslugify = s => uslug(s)
-md.use(mip).use(mia, { slugify: uslugify })
+md.use(mip, {
+  defaultLanguage: 'bash'
+}).use(mia, { slugify: uslugify })
 
 export default {
   env: {
@@ -247,7 +252,11 @@ export default {
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
   },
   loading: { color: '#fff' },
-  css: ['@/assets/prettier-scroll-bar.less', '@/assets/github.css'],
+  css: [
+    '@/assets/prettier-scroll-bar.less',
+    '@/assets/github.css',
+    '@/assets/prism.min.css'
+  ],
   plugins: [],
   buildModules: ['@nuxtjs/vuetify'],
   modules: [
