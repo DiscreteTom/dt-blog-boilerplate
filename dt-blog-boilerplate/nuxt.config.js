@@ -268,11 +268,6 @@ export default {
     },
     manifest: {
       name: config.title
-    },
-    workbox: {
-      cacheOptions: {
-        cacheId: config.title
-      }
     }
   },
   /*
