@@ -45,6 +45,7 @@ export default {
         ).then(m => {
           this.attributes = m.attributes
           this.selectedArticle = m.vue.component
+          this.$nuxt.$loading.finish()
         })
         // load title img
         this.imgSrc = ''
@@ -64,7 +65,10 @@ export default {
   watch: {
     '$store.state.current.rawPath': 'refresh'
   },
-  created() {
+  mounted() {
+    this.$nextTick(() => {
+      this.$nuxt.$loading.start()
+    })
     this.refresh()
   }
 }

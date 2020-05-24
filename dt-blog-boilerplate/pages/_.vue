@@ -1,8 +1,8 @@
 <template>
   <div>
     <BreadCrumbs class="d-md-none"></BreadCrumbs>
-    <Folder v-show="$store.state.current.isDir"></Folder>
-    <Markdown v-show="!$store.state.current.isDir"></Markdown>
+    <Folder v-if="$store.state.current.isDir"></Folder>
+    <Markdown v-else></Markdown>
   </div>
 </template>
 

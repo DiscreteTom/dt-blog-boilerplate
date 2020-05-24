@@ -166,5 +166,5 @@ toc: true # enable table of contents
 
 - [ ] Pagination
 - [ ] Next/Previous blog
-- [ ] Loading progress bar
+- [x] Loading progress bar
 - [ ] Url anchors support
