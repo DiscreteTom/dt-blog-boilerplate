@@ -8,20 +8,17 @@
       </h1>
     </div>
     <v-expansion-panels accordion tile hover>
-      <v-expansion-panel
-        v-for="(paths, tagName) in $store.state.tagMap"
-        :key="tagName"
-      >
+      <v-expansion-panel v-for="item in sortedTagMap" :key="item.tagName">
         <v-expansion-panel-header>
           <div>
             <v-icon class="mr-5">mdi-tag</v-icon>
-            <span class="font-weight-bold">{{ tagName }}</span>
-            <span class="text--secondary">({{ paths.length }})</span>
+            <span class="font-weight-bold">{{ item.tagName }}</span>
+            <span class="text--secondary">({{ item.paths.length }})</span>
           </div>
         </v-expansion-panel-header>
         <v-expansion-panel-content>
           <DirentCard
-            v-for="path in paths"
+            v-for="path in item.paths"
             :key="path"
             :dirent="$store.state.pathMap[path]"
           ></DirentCard>
@@ -46,6 +43,18 @@ export default {
           content: `Tags for ${this.$store.state.current.title}`
         }
       ]
+    }
+  },
+  computed: {
+    sortedTagMap() {
+      let result = [] // [{tagName: string, paths: []}]
+      Object.keys(this.$store.state.tagMap).map(key => {
+        result.push({ tagName: key, paths: this.$store.state.tagMap[key] })
+      })
+      result.sort((a, b) => {
+        return a.tagName.toLowerCase() > b.tagName.toLowerCase() ? 1 : -1
+      })
+      return result
     }
   }
 }
