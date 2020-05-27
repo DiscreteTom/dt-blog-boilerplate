@@ -161,10 +161,3 @@ description: # default to title
 toc: true # enable table of contents
 ---
 ```
-
-## TODO
-
-- [ ] Pagination
-- [ ] Next/Previous blog
-- [x] Loading progress bar
-- [ ] Url anchors support
