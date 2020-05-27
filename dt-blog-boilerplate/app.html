@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html {{ HTML_ATTRS }}>
+  <head {{ HEAD_ATTRS }}>
+    {{ HEAD }}
+  </head>
+  <body {{ BODY_ATTRS }}>
+    {{ APP }}
+  </body>
+  <!-- inject mathjax -->
+  <script type="text/x-mathjax-config">
+    // TeX-AMS_HTML
+    MathJax.Hub.Config({
+      jax: [
+        'input/TeX',
+        'output/HTML-CSS',
+        'output/PreviewHTML',
+      ],
+      extensions: [
+        'tex2jax.js',
+        'AssistiveMML.js',
+        'a11y/accessibility-menu.js',
+      ],
+      TeX: {
+        extensions: [
+          'AMSmath.js',
+          'AMSsymbols.js',
+          'noErrors.js',
+          'noUndefined.js',
+          'mediawiki-texvc.js',
+        ]
+      },
+      tex2jax: {
+        inlineMath: [
+          ['$', '$'],
+          ['\\\\(', '\\\\)'],
+        ],
+        displayMath: [
+          ['$$', '$$'],
+          ['\\\\[', '\\\\]'],
+        ],
+        processEscapes: true
+      },
+      showMathMenu: false,
+      showProcessingMessages: false,
+      messageStyle: 'none',
+      skipStartupTypeset: true, // disable initial rendering
+      positionToHash: false
+    })
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</html>

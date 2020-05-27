@@ -10,6 +10,7 @@
   - Posts order are decided by filenames.
 - Auto generate tags page.
   - Posts and folders are both supported.
+- Mathjax support.
 
 ## How to use
 
