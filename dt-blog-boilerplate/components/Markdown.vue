@@ -14,6 +14,22 @@
         <div class="content mx-5 markdown-body">
           <component :is="selectedArticle" />
         </div>
+        <v-row v-if="$store.state.current.siblings">
+          <!-- previous post -->
+          <v-col v-if="previous">
+            <v-card :to="previous ? previous.path : ''" outlined hover>
+              <v-card-text class="overline">PREVIOUS</v-card-text>
+              <v-card-title>{{ previous ? previous.title : '' }}</v-card-title>
+            </v-card>
+          </v-col>
+          <!-- next post -->
+          <v-col v-if="next">
+            <v-card :to="next ? next.path : ''" outlined hover>
+              <v-card-text class="overline">NEXT</v-card-text>
+              <v-card-title>{{ next ? next.title : '' }}</v-card-title>
+            </v-card>
+          </v-col>
+        </v-row>
       </v-col>
       <!-- right TOC, hide when small  -->
       <v-col cols="3" class="hidden-sm-and-down">
@@ -32,7 +48,9 @@ export default {
     return {
       attributes: {},
       selectedArticle: null,
-      imgSrc: ''
+      imgSrc: '',
+      previous: null, // dirent
+      next: null // dirent
     }
   },
   methods: {
@@ -57,6 +75,35 @@ export default {
               document.getElementsByClassName('markdown-body')
             ])
           })
+          // load next & previous post
+          if (this.$store.state.current.siblings) {
+            // get parent
+            let parentPath = this.$store.state.current.path
+              .split('/')
+              .slice(0, -1)
+              .join('/')
+            let parent = this.$store.state.pathMap[parentPath]
+            // get current index
+            let currentIndex = 0
+            for (
+              currentIndex = 0;
+              currentIndex < parent.children.length;
+              currentIndex++
+            ) {
+              if (
+                parent.children[currentIndex].path ==
+                this.$store.state.current.path
+              )
+                break
+            }
+            // get previous & next post
+            if (currentIndex > 0)
+              this.previous = parent.children[currentIndex - 1]
+            else this.previous = null
+            if (currentIndex < parent.children.length - 1)
+              this.next = parent.children[currentIndex + 1]
+            else this.next = null
+          }
         })
         // load title img
         this.imgSrc = ''

@@ -138,6 +138,7 @@ function loadFolder(absPath, path = '') {
         ret.img = attributes.img
         ret.tags = attributes.tags || []
         ret.toc = attributes.toc == null ? true : attributes.toc
+        ret.siblings = attributes.siblings == null ? true : attributes.siblings
         // get toc
         if (ret.toc) {
           ret.children = toc(mdFileContent).json

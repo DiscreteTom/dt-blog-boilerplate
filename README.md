@@ -160,5 +160,6 @@ tags: [] # a string list
 img: # title img
 description: # default to title
 toc: true # enable table of contents
+siblings: true # enable previous/next post button
 ---
 ```
