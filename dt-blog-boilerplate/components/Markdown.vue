@@ -17,14 +17,24 @@
         <v-row v-if="$store.state.current.siblings">
           <!-- previous post -->
           <v-col v-if="previous">
-            <v-card :to="previous ? previous.path : ''" outlined hover>
+            <v-card
+              outlined
+              hover
+              style="height:100%"
+              :to="previous ? previous.path : ''"
+            >
               <v-card-text class="overline">PREVIOUS</v-card-text>
               <v-card-title>{{ previous ? previous.title : '' }}</v-card-title>
             </v-card>
           </v-col>
           <!-- next post -->
           <v-col v-if="next">
-            <v-card :to="next ? next.path : ''" outlined hover>
+            <v-card
+              outlined
+              hover
+              style="height: 100%"
+              :to="next ? next.path : ''"
+            >
               <v-card-text class="overline">NEXT</v-card-text>
               <v-card-title>{{ next ? next.title : '' }}</v-card-title>
             </v-card>
