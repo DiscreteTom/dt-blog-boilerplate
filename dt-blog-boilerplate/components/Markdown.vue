@@ -43,7 +43,7 @@
       </v-col>
       <!-- right TOC, hide when small  -->
       <v-col cols="3" class="hidden-sm-and-down">
-        <TOC header restrict style="position:fixed"></TOC>
+        <TOC header restrict style="position:sticky;min-width:100%"></TOC>
       </v-col>
     </v-row>
   </div>
