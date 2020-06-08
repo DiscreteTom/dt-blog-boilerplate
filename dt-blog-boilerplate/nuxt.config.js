@@ -149,22 +149,11 @@ function loadFolder(absPath, path = '') {
             if (child.lvl > maxLvl) maxLvl = child.lvl
             if (!minLvl || child.lvl < minLvl) minLvl = child.lvl
           })
-          // fix children level
-          if (maxLvl == minLvl) {
-            // if all children have the same level
-            // consider them as level 2 to optimize ui
-            ret.children = ret.children.map(child => {
-              child.lvl = 2
-              return child
-            })
-          } else {
-            // if children have many different levels
-            // make sure children levels start from 1
-            ret.children = ret.children.map(child => {
-              child.lvl = child.lvl - minLvl + 1
-              return child
-            })
-          }
+          // make sure children levels start from 1
+          ret.children = ret.children.map(child => {
+            child.lvl = child.lvl - minLvl + 1
+            return child
+          })
         }
       }
       // update tagMap
