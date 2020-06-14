@@ -27,6 +27,7 @@
     "markdown-toc": "^1.2.0",
     "nuxt": "^2.12.2",
     "uslug": "^1.0.4",
+    "uuid": "^8.1.0",
     "yaml-loader": "^0.5.0"
   },
   "devDependencies": {
