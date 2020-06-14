@@ -9,6 +9,7 @@ import mia from 'markdown-it-anchor'
 import matter from 'gray-matter'
 import toc from 'markdown-toc'
 import uslug from 'uslug'
+import { v4 as uuidv4 } from 'uuid'
 
 import loadLanguages from 'prismjs/components/'
 loadLanguages()
@@ -29,12 +30,32 @@ let config = {
   fileIcon: 'mdi-file',
   orderDecider: '@',
   reverse: false,
-  description: ''
+  description: '',
+  headScripts: []
 }
 let t = yaml.safeLoad(fs.readFileSync('../_config.yml', 'utf8')) || {}
 for (let key in config) {
   if (t[key]) config[key] = t[key]
 }
+
+/**
+ * ref: https://vue-meta.nuxtjs.org/api/#script
+ */
+function getDangerouslyDisableSanitizersByTagID(config) {
+  let result = {}
+  for (let i = 0; i < config.headScripts.length; ++i) {
+    if (config.headScripts[i].innerHTML) {
+      //ref: https://github.com/nuxt/docs/pull/887/files
+      let hid = uuidv4()
+      config.headScripts[i].hid = hid
+      result[hid] = ['innerHTML']
+    }
+  }
+  return result
+}
+let dangerouslyDisableSanitizersByTagID = getDangerouslyDisableSanitizersByTagID(
+  config
+)
 
 /**
  * `path`=>`dirent`
@@ -233,7 +254,10 @@ export default {
         content: config.description || config.title
       }
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
+    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    script: config.headScripts,
+    // disable escaped innerHTML, ref: https://vue-meta.nuxtjs.org/api/#script
+    __dangerouslyDisableSanitizersByTagID: dangerouslyDisableSanitizersByTagID
   },
   loading: { color: 'gray', throttle: 50 },
   css: [

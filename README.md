@@ -134,6 +134,20 @@ fileIcon: mdi-file # mdi icon name
 orderDecider: '@' # can be multiple characters
 reverse: false # reverse dirents order
 description:  # default to title
+headScripts: [] # to append custom scripts
+```
+
+The `headScripts` can be used to append google analytics tracking code:
+
+```yaml
+headScripts: # to append custom scripts
+  - src: https://www.googletagmanager.com/gtag/js?id=UA-XXXXXXXXX
+    async: true
+  - innerHTML: |
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-XXXXXXXXX');
 ```
 
 ### Folder configuration
