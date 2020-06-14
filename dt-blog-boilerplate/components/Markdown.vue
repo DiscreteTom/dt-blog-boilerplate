@@ -2,7 +2,7 @@
   <div>
     <v-row>
       <!-- Content -->
-      <v-col cols="9">
+      <v-col md="9">
         <!-- header -->
         <div class="ml-5">
           <h1>
