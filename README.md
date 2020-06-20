@@ -104,10 +104,10 @@ E.g.:
 		main.yml
 content/
 	1@posts/
-		1@how-to-write-blogs.md
-		2@my-second-post.md
-		3@what-a-good-day.md
-		_config.yml
+		1@how-to-write-blogs.md # order + filename
+		2.5@my-second-post.md # order can be decimal
+		3@.md # filename can be omitted, default to order
+		_config.yml # folder config
 		_img/
 			title.jpg
 	100@about.md
