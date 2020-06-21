@@ -122,6 +122,7 @@ function loadFolder(absPath, path = '') {
         childName = childRawName.slice(orderDeciderIndex + 1)
       }
       childName = childName.split('.')[0] // remove file name suffix
+      if (childName == '') childName = String(childOrder) // default filename
       let childPath = [path, childName].join('/')
       let ret = {
         isDir: child.isDirectory(),
