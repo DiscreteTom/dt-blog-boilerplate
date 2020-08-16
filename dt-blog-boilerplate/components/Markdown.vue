@@ -1,63 +1,42 @@
 <template>
   <div>
-    <v-row>
-      <!-- Content -->
-      <v-col md="9">
-        <!-- header -->
-        <div class="ml-5">
-          <h1>
-            {{ $store.state.current.title }}
-          </h1>
-          <p class="text--secondary">{{ $store.state.current.description }}</p>
-          <img v-if="imgSrc" :src="imgSrc" style="max-width:100%" />
-        </div>
-        <div class="content mx-5 markdown-body">
-          <component :is="selectedArticle" />
-        </div>
-        <v-row v-if="$store.state.current.siblings">
-          <!-- previous post -->
-          <v-col v-if="previous">
-            <v-card
-              outlined
-              hover
-              style="height:100%"
-              :to="previous ? previous.path : ''"
-            >
-              <v-card-text class="overline">PREVIOUS</v-card-text>
-              <v-card-title>{{ previous ? previous.title : '' }}</v-card-title>
-            </v-card>
-          </v-col>
-          <!-- next post -->
-          <v-col v-if="next">
-            <v-card
-              outlined
-              hover
-              style="height: 100%"
-              :to="next ? next.path : ''"
-            >
-              <v-card-text class="overline">NEXT</v-card-text>
-              <v-card-title>{{ next ? next.title : '' }}</v-card-title>
-            </v-card>
-          </v-col>
-        </v-row>
+    <!-- header -->
+    <div class="ml-5">
+      <h1>
+        {{ $store.state.current.title }}
+      </h1>
+      <p class="text--secondary">{{ $store.state.current.description }}</p>
+      <img v-if="imgSrc" :src="imgSrc" style="max-width:100%" />
+    </div>
+    <div class="content mx-5 markdown-body">
+      <component :is="selectedArticle" />
+    </div>
+    <v-row v-if="$store.state.current.siblings">
+      <!-- previous post -->
+      <v-col v-if="previous">
+        <v-card
+          outlined
+          hover
+          style="height:100%"
+          :to="previous ? previous.path : ''"
+        >
+          <v-card-text class="overline">PREVIOUS</v-card-text>
+          <v-card-title>{{ previous ? previous.title : '' }}</v-card-title>
+        </v-card>
       </v-col>
-      <!-- right TOC, hide when small  -->
-      <v-col cols="3" class="hidden-sm-and-down">
-        <TOC
-          header
-          restrict
-          style="position:sticky;min-width:100%;top:100px"
-        ></TOC>
+      <!-- next post -->
+      <v-col v-if="next">
+        <v-card outlined hover style="height: 100%" :to="next ? next.path : ''">
+          <v-card-text class="overline">NEXT</v-card-text>
+          <v-card-title>{{ next ? next.title : '' }}</v-card-title>
+        </v-card>
       </v-col>
     </v-row>
   </div>
 </template>
 
 <script>
-import TOC from './TOC'
-
 export default {
-  components: { TOC },
   data() {
     return {
       attributes: {},

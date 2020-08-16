@@ -1,5 +1,6 @@
 <template>
   <v-app>
+    <!-- left drawer -->
     <v-navigation-drawer v-model="drawer" clipped app>
       <div class="hidden-md-and-up">
         <v-list-item>
@@ -52,7 +53,18 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-    <v-app-bar clipped-left fixed app flat>
+    <!-- right drawer -->
+    <v-navigation-drawer
+      app
+      clipped
+      right
+      :value="!$store.state.current.isDir && $store.state.current.toc"
+    >
+      <TOC header></TOC>
+    </v-navigation-drawer>
+
+    <!-- top bar -->
+    <v-app-bar clipped-left clipped-right fixed app flat>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title
         class="d-none d-sm-flex"

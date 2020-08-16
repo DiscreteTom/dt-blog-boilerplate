@@ -1,10 +1,7 @@
 <template>
   <v-list dense v-if="$store.state.current.toc">
     <v-subheader v-if="header">TOC</v-subheader>
-    <div
-      class="toc-content"
-      :style="restrict ? { 'max-height': '500px', overflow: 'auto' } : {}"
-    >
+    <div class="toc-content">
       <v-list-item
         v-for="(t, i) in $store.state.current.children"
         :key="i"
@@ -25,6 +22,6 @@
 
 <script>
 export default {
-  props: { restrict: Boolean, header: Boolean }
+  props: { header: Boolean }
 }
 </script>
