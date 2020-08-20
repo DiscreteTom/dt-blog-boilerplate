@@ -59,6 +59,7 @@
       clipped
       right
       :value="!$store.state.current.isDir && $store.state.current.toc"
+      class="hidden-sm-and-down"
     >
       <TOC header></TOC>
     </v-navigation-drawer>
