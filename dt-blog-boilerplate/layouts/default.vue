@@ -51,6 +51,24 @@
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <!-- friends -->
+        <template
+          v-if="
+            $store.state.config.friends && $store.state.config.friends.length
+          "
+        >
+          <v-divider class="my-3"></v-divider>
+          <v-list-item to="/friends/" router>
+            <v-list-item-action>
+              <v-icon>{{ $store.state.config.friendsIcon }}</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>
+                Friends
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </template>
       </v-list>
     </v-navigation-drawer>
     <!-- right drawer -->

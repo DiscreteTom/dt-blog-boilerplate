@@ -31,7 +31,9 @@ let config = {
   orderDecider: '@',
   reverse: false,
   description: '',
-  headScripts: []
+  headScripts: [],
+  friends: [],
+  friendsIcon: 'mdi-open-in-new'
 }
 let t = yaml.safeLoad(fs.readFileSync('../_config.yml', 'utf8')) || {}
 for (let key in config) {
@@ -323,6 +325,6 @@ export default {
     }
   },
   generate: {
-    routes: contentRoutes.concat(['/', '/404', '/tags']).concat(tagsRoutes)
+    routes: contentRoutes.concat(['/', '/404', '/tags', '/friends']).concat(tagsRoutes)
   }
 }

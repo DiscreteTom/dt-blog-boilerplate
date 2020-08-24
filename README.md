@@ -135,6 +135,11 @@ orderDecider: '@' # can be multiple characters
 reverse: false # reverse dirents order
 description:  # default to title
 headScripts: [] # to append custom scripts
+friends:
+  - title: xxx
+    url: https://example.com/
+    description: xxx
+friendsIcon: mdi-open-in-new
 ```
 
 The `headScripts` can be used to append google analytics tracking code:
