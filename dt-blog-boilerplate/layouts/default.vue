@@ -58,8 +58,12 @@
       app
       clipped
       right
-      :value="!$store.state.current.isDir && $store.state.current.toc"
-      class="hidden-sm-and-down"
+      v-if="
+        $vuetify.breakpoint.mdAndUp &&
+          $route.name == 'all' &&
+          !$store.state.current.isDir &&
+          $store.state.current.toc
+      "
     >
       <TOC header></TOC>
     </v-navigation-drawer>
