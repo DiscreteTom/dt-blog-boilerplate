@@ -2,6 +2,25 @@
 
 > View [my blog](https://discretetom.github.io/) to preview this boilerplate.
 
+<details>
+
+<summary>Table of Contents</summary>
+
+- [DT-BLOG-BOILERPLATE](#dt-blog-boilerplate)
+  - [Features](#features)
+  - [How to Use](#how-to-use)
+    - [Modify Your Github Repository](#modify-your-github-repository)
+    - [Setup Personal Access Token](#setup-personal-access-token)
+    - [Setup Github Actions](#setup-github-actions)
+    - [Organize Your Content](#organize-your-content)
+  - [Configuration](#configuration)
+    - [Global Configuration](#global-configuration)
+    - [Folder Configuration](#folder-configuration)
+    - [Markdown Front Matter](#markdown-front-matter)
+  - [How to Test Locally](#how-to-test-locally)
+
+</details>
+
 ## Features
 
 - Content/Style splitting.
@@ -21,7 +40,7 @@ If you gonna deploy your blog for your **user repo**, which means your repo name
 
 ### Setup Personal Access Token
 
-This repo uses [peaceiris/actions-gh-pages](https://github.com/peaceiris/actions-gh-pages) to deploy to github pages. 
+This repo uses [peaceiris/actions-gh-pages](https://github.com/peaceiris/actions-gh-pages) to deploy to github pages.
 See [this part](https://github.com/peaceiris/actions-gh-pages#%EF%B8%8F-set-personal-access-token-personal_token) to generate a personal access token, then add it to your repo **Secrets** in the Settings page.
 
 ### Setup Github Actions
@@ -133,15 +152,15 @@ The content of `_config.yml` in the root folder:
 
 ```yaml
 title: DiscreteTom's Blog Boilerplate # site title
-author: '' # author github username
-email: '' # author email address
-repo: '' # github repo address
+author: "" # author github username
+email: "" # author email address
+repo: "" # github repo address
 root: index # root page path
 folderIcon: mdi-folder-outline # mdi icon name
 fileIcon: mdi-file # mdi icon name
-orderDecider: '@' # can be multiple characters
+orderDecider: "@" # can be multiple characters
 reverse: false # reverse dirents order
-description:  # default to title
+description: # default to title
 headScripts: [] # to append custom scripts
 friends:
   - title: xxx
@@ -189,4 +208,26 @@ description: # default to title
 toc: true # enable table of contents
 siblings: true # enable previous/next post button
 ---
+
 ```
+
+## How to Test Locally
+
+1. Download this repository.
+2. Create your content folder and global config file in this repository root folder.
+
+After that, the structure of this repository folder should be like:
+
+```
+├─content/
+│ └─...                   # your content here
+├─_config.yml             # your global config
+|
+├─dt-blog-boilerplate/    # source code of the boilerplate
+| ├─packages.json
+│ └─...
+└─...                     # other files
+```
+
+3. Go into the `dt-blog-boilerplate` folder(where the `package.json` is located), run `npm install`, then `npm run dev`.
+4. View your blog site at http://localhost:3000.
