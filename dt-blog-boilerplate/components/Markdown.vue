@@ -68,11 +68,12 @@ export default {
               document.getElementsByClassName('markdown-body')
             ])
           })
-          // load next & previous post
+          // get next & previous post link
           if (this.$store.state.current.siblings) {
             // get parent
             let parentPath = this.$store.state.current.parentPath
             let parent = this.$store.state.pathMap[parentPath]
+            if (parentPath == '/') parent = this.$store.state.root
             if (parent != null) {
               // get current index
               let currentIndex = 0
