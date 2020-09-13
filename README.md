@@ -11,28 +11,33 @@
 - Auto generate tags page.
   - Posts and folders are both supported.
 - Mathjax support.
+- Google analytics support.
 
-## How to use
+## How to Use
 
-### Modify your github repo
+### Modify Your Github Repository
 
-If you gonna deploy your blog for your **user repo**, which means your repo name is `<username>.github.io`, you have to deploy your rendered content to your master branch, so you have to put your content in another branch, e.g. `source`. For a better accessibility you can set your source branch as the default branch.
+If you gonna deploy your blog for your **user repo**, which means your repo name is `<username>.github.io`, you have to deploy your rendered content to your master branch, so you have to put your content in another branch, e.g. `source`. For a better accessibility you can set this `source` branch as the default branch of the blog repository.
 
-### Setup personal access token
+### Setup Personal Access Token
 
 This repo uses [peaceiris/actions-gh-pages](https://github.com/peaceiris/actions-gh-pages) to deploy to github pages. 
-See [this part](https://github.com/peaceiris/actions-gh-pages#%EF%B8%8F-personal_token) to generate a personal access token, then add it to your repo Secrets in the Settings page.
+See [this part](https://github.com/peaceiris/actions-gh-pages#%EF%B8%8F-set-personal-access-token-personal_token) to generate a personal access token, then add it to your repo **Secrets** in the Settings page.
 
-### Setup Github actions
+### Setup Github Actions
+
+> Tips: you can always see my [blog source code](https://github.com/DiscreteTom/discretetom.github.io) as a reference.
 
 In the source branch, create a file `.github/workflows/main.yml` with the following content:
 
 ```yaml
 name: Github Pages
+
 on:
   push:
     branches:
       - source # your source branch name
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -78,57 +83,60 @@ jobs:
           publish_dir: boilerplateRepo/dt-blog-boilerplate/dist
 ```
 
-### Organize your content
+### Organize Your Content
 
 You source branch should have the following structure:
 
 ```
-.github/
-	workflows/
-		main.yml
-content/
-	<order>@<foldername>/
-		<order>@<filename>
-		_config.yml
-		_img/
-			<filename>
-_config.yml
-other_custom_files
+├─.github/
+│ └─workflows/
+│   └─main.yml
+├─content/
+│ └─<order>@<foldername>/
+│   ├─_config.yml
+│   ├─<order>@<filename>
+│   └─_img/
+│     └─<filename>
+├─_config.yml
+└─other_custom_files
 ```
 
 E.g.:
 
 ```
-.github/
-	workflows/
-		main.yml
-content/
-	1@posts/
-		1@how-to-write-blogs.md # order + filename
-		2.5@my-second-post.md # order can be decimal
-		3@.md # filename can be omitted, default to order
-		_config.yml # folder config
-		_img/
-			title.jpg
-	100@about.md
-_config.yml
-README.md
+├─.github/
+│ └─workflows/
+│   └─main.yml
+├─content/
+| ├─_config.yml                       # content root folder config
+│ ├─1@posts/                          # order + folder name
+│ | ├─_config.yml                     # folder config
+│ | ├─1@how-to-write-blogs.md         # order + file name
+│ | ├─2.5@my-second-post.md           # order can be decimal
+│ | ├─3@.md                           # file name can be omitted, default to order
+│ | ├─test.md                         # order can be omitted, default to 0
+│ | ├─_ignore_me.md                   # files starts with '_' will be ignored
+│ | └─_img/
+│ |   └─title.jpg
+| └─100@about.md
+├─_config.yml                         # global config
+└─README.md
 ```
 
-You can use `./_img/filename` to reference an image in a markdown file.
+You can use `./_img/filename` in a markdown file to reference an image under the `_img` folder: `![](./_img/filename)`.
 
 ## Configuration
 
-### Global configuration
+### Global Configuration
 
 The content of `_config.yml` in the root folder:
 
 ```yaml
-title: DiscreteTom's Blog Boilerplate # page title
-root: index # root path
-repo: '' # github repo address
-email: '' # author email address
+title: DiscreteTom's Blog Boilerplate # site title
 author: '' # author github username
+email: '' # author email address
+repo: '' # github repo address
+root: index # root page path
 folderIcon: mdi-folder-outline # mdi icon name
 fileIcon: mdi-file # mdi icon name
 orderDecider: '@' # can be multiple characters
@@ -155,7 +163,7 @@ headScripts: # to append custom scripts
       gtag('config', 'UA-XXXXXXXXX');
 ```
 
-### Folder configuration
+### Folder Configuration
 
 The `content` folder and its sub-folders can contain a `_config.yml` file.
 
@@ -169,7 +177,7 @@ img: # title img
 tags: [] # a string list
 ```
 
-### Markdown front matter
+### Markdown Front Matter
 
 ```yaml
 ---
