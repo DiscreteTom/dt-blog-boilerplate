@@ -1,9 +1,9 @@
 <template>
-  <v-list dense v-if="$store.state.current.toc">
+  <v-list dense v-if="$store.state.hasToc">
     <v-subheader v-if="header">TOC</v-subheader>
     <div class="toc-content">
       <v-list-item
-        v-for="(t, i) in $store.state.current.children"
+        v-for="(t, i) in $store.state.current.toc"
         :key="i"
         @click="$vuetify.goTo('#' + t.slug)"
       >

@@ -17,7 +17,6 @@ import BreadCrumbs from '~/components/BreadCrumbs.vue'
 
 export default {
   components: { Markdown, Folder, BreadCrumbs },
-  middleware: 'content',
   head() {
     return {
       title: this.$store.state.current.title,
@@ -29,6 +28,10 @@ export default {
         }
       ]
     }
+  },
+  validate({ route, store }) {
+    // if path not in pathMap, throw 404
+    return store.state.pathMap[route.path]
   }
 }
 </script>

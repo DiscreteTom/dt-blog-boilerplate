@@ -71,31 +71,30 @@ export default {
           // load next & previous post
           if (this.$store.state.current.siblings) {
             // get parent
-            let parentPath = this.$store.state.current.path
-              .split('/')
-              .slice(0, -1)
-              .join('/')
+            let parentPath = this.$store.state.current.parentPath
             let parent = this.$store.state.pathMap[parentPath]
-            // get current index
-            let currentIndex = 0
-            for (
-              currentIndex = 0;
-              currentIndex < parent.children.length;
-              currentIndex++
-            ) {
-              if (
-                parent.children[currentIndex].path ==
-                this.$store.state.current.path
-              )
-                break
+            if (parent != null) {
+              // get current index
+              let currentIndex = 0
+              for (
+                currentIndex = 0;
+                currentIndex < parent.children.length;
+                currentIndex++
+              ) {
+                if (
+                  parent.children[currentIndex].path ==
+                  this.$store.state.current.path
+                )
+                  break
+              }
+              // get previous & next post
+              if (currentIndex > 0)
+                this.previous = parent.children[currentIndex - 1]
+              else this.previous = null
+              if (currentIndex < parent.children.length - 1)
+                this.next = parent.children[currentIndex + 1]
+              else this.next = null
             }
-            // get previous & next post
-            if (currentIndex > 0)
-              this.previous = parent.children[currentIndex - 1]
-            else this.previous = null
-            if (currentIndex < parent.children.length - 1)
-              this.next = parent.children[currentIndex + 1]
-            else this.next = null
           }
         })
         // load title img

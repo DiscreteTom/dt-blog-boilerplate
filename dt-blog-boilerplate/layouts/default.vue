@@ -1,7 +1,8 @@
 <template>
   <v-app>
     <!-- left drawer -->
-    <v-navigation-drawer v-model="drawer" clipped app>
+    <v-navigation-drawer v-model="leftDrawer" clipped app>
+      <!-- show site title when small -->
       <div class="hidden-md-and-up">
         <v-list-item>
           <v-list-item-content>
@@ -15,7 +16,7 @@
 
       <v-list>
         <!-- TOC -->
-        <div v-if="$store.state.current.toc" class="hidden-md-and-up mb-5">
+        <div v-show="$store.state.hasToc" class="hidden-md-and-up mb-5">
           <v-list-item @click="toggleToc">
             <v-list-item-action>
               <v-icon>mdi-table-of-contents</v-icon>
@@ -39,7 +40,7 @@
         <v-list-item
           v-for="(dirent, i) in $store.state.root.children"
           :key="i"
-          :to="'/' + dirent.name"
+          :to="'/' + dirent.name + '/'"
           router
         >
           <v-list-item-action>
@@ -76,23 +77,22 @@
       app
       clipped
       right
-      v-if="
-        $vuetify.breakpoint.mdAndUp &&
-          $route.name == 'all' &&
-          !$store.state.current.isDir &&
-          $store.state.current.toc
-      "
+      disable-resize-watcher
+      :value="drawerRight"
     >
       <TOC header></TOC>
     </v-navigation-drawer>
 
     <!-- top bar -->
     <v-app-bar clipped-left clipped-right fixed app flat>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+      <!-- left drawer btn -->
+      <v-app-bar-nav-icon @click.stop="leftDrawer = !leftDrawer" />
+      <!-- site title -->
       <v-toolbar-title
         class="d-none d-sm-flex"
         v-text="$store.state.config.title"
       />
+
       <BreadCrumbs class="d-none d-md-flex"></BreadCrumbs>
 
       <v-spacer></v-spacer>
@@ -174,11 +174,14 @@
         <span>Copy link</span>
       </v-tooltip>
     </v-app-bar>
+
+    <!-- main content -->
     <v-content>
       <v-container>
         <nuxt />
       </v-container>
     </v-content>
+
     <!-- Share Tip -->
     <v-snackbar v-model="snackbar" :timeout="2000" right top>
       Copied to clipboard
@@ -186,6 +189,8 @@
         Close
       </v-btn>
     </v-snackbar>
+
+    <!-- footer -->
     <v-footer app absolute inset>
       <span>&copy; {{ new Date().getFullYear() }}</span>
     </v-footer>
@@ -202,7 +207,7 @@ export default {
   data() {
     return {
       clipboard: null,
-      drawer: true,
+      leftDrawer: true,
       isMounted: false,
       snackbar: false,
       avatar: '',
@@ -218,6 +223,9 @@ export default {
   computed: {
     url() {
       return this.isMounted ? window.location.href : ''
+    },
+    drawerRight() {
+      return this.$vuetify.breakpoint.mdAndUp && this.$store.state.hasToc
     }
   },
   mounted() {

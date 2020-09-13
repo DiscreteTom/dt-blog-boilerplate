@@ -7,6 +7,8 @@
         <v-icon>mdi-chevron-right</v-icon>
       </h1>
     </div>
+
+    <!-- tags -->
     <v-expansion-panels accordion tile hover>
       <v-expansion-panel v-for="item in sortedTagMap" :key="item.tagName">
         <v-expansion-panel-header>

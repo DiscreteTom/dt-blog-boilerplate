@@ -35,15 +35,18 @@ let config = {
   friends: [],
   friendsIcon: 'mdi-open-in-new'
 }
-let t = yaml.safeLoad(fs.readFileSync('../_config.yml', 'utf8')) || {}
-for (let key in config) {
-  if (t[key]) config[key] = t[key]
-}
+// load global config
+void (function(config) {
+  let t = yaml.safeLoad(fs.readFileSync('../_config.yml', 'utf8')) || {}
+  for (let key in config) {
+    if (t[key]) config[key] = t[key]
+  }
+})(config)
 
 /**
  * ref: https://vue-meta.nuxtjs.org/api/#script
  */
-function getDangerouslyDisableSanitizersByTagID(config) {
+let dangerouslyDisableSanitizersByTagID = (function(config) {
   let result = {}
   for (let i = 0; i < config.headScripts.length; ++i) {
     if (config.headScripts[i].innerHTML) {
@@ -54,13 +57,12 @@ function getDangerouslyDisableSanitizersByTagID(config) {
     }
   }
   return result
-}
-let dangerouslyDisableSanitizersByTagID = getDangerouslyDisableSanitizersByTagID(
-  config
-)
+})(config)
 
 /**
  * `path`=>`dirent`
+ *
+ * e.g.: `"/index/"`=>`dirent`
  */
 let pathMap = {}
 /**
@@ -74,7 +76,7 @@ let root = loadFolder('../content')
 /**
  * Construct pathMap & tagMap, return content tree
  */
-function loadFolder(absPath, path = '') {
+function loadFolder(absPath, path = '/') {
   // init folderConfig
   let folderConfig = {
     icon: config.folderIcon,
@@ -109,7 +111,9 @@ function loadFolder(absPath, path = '') {
       let childRawPath = childAbsPath.slice(10) // '/rawName1/rawName2'
       let childOrder = 0
       let childName = childRawName
-      // update name and childOrder by orderDecider & file name suffix
+      let childPath = '' // '/name1/name2'
+
+      // update childName, childPath and childOrder by orderDecider & file name suffix
       let orderDeciderIndex = childRawName.indexOf(folderConfig.orderDecider)
       if (orderDeciderIndex !== -1) {
         // orderDecider exists
@@ -124,8 +128,10 @@ function loadFolder(absPath, path = '') {
         childName = childRawName.slice(orderDeciderIndex + 1)
       }
       childName = childName.split('.')[0] // remove file name suffix
-      if (childName == '') childName = String(childOrder) // default filename
-      let childPath = [path, childName].join('/')
+      if (childName == '') childName = String(childOrder) // default childName is childOrder
+      childPath = path + childName + '/'
+
+      // construct child by chile type
       let ret = {
         isDir: child.isDirectory(),
         icon: '', // will be overwrote below
@@ -139,7 +145,10 @@ function loadFolder(absPath, path = '') {
         description: '', // if current is a folder, will be overwrote below
         img: '', // will be overwrote below
         tags: [], // will be overwrote below
-        children: [] // will be overwrote below
+        children: [], // will be overwrote below
+        toc: null, // only effective for md file
+        siblings: true, // only effective for md file
+        parentPath: path // ref the parent object will cause circular structure, so ref parent path
       }
       if (child.isDirectory()) {
         // if this child is a folder
@@ -165,21 +174,22 @@ function loadFolder(absPath, path = '') {
         ret.siblings = attributes.siblings == null ? true : attributes.siblings
         // get toc
         if (ret.toc) {
-          ret.children = toc(mdFileContent).json
+          ret.toc = toc(mdFileContent).json
           // get max level
           let maxLvl = 0
           let minLvl = 0
-          ret.children.map(child => {
-            if (child.lvl > maxLvl) maxLvl = child.lvl
-            if (!minLvl || child.lvl < minLvl) minLvl = child.lvl
+          ret.toc.map(header => {
+            if (header.lvl > maxLvl) maxLvl = header.lvl
+            if (!minLvl || header.lvl < minLvl) minLvl = header.lvl
           })
-          // make sure children levels start from 1
-          ret.children = ret.children.map(child => {
-            child.lvl = child.lvl - minLvl + 1
-            return child
+          // make sure toc header levels start from 1
+          ret.toc = ret.toc.map(header => {
+            header.lvl = header.lvl - minLvl + 1
+            return header
           })
         }
       }
+
       // update tagMap
       ret.tags.map(tag => {
         if (tagMap[tag]) tagMap[tag].push(ret.path)
@@ -188,10 +198,14 @@ function loadFolder(absPath, path = '') {
       // update pathMap
       pathMap[ret.path] = ret
       return ret
-    })
+    }) // end of children construction
+
+  // sort children by their order
   children.sort((a, b) =>
     folderConfig.reverse ? b.order - a.order : a.order - b.order
   )
+
+  // construct result
   let result = {
     isDir: true,
     icon: folderConfig.icon,
@@ -205,8 +219,12 @@ function loadFolder(absPath, path = '') {
     description: folderConfig.description,
     img: folderConfig.img,
     tags: folderConfig.tags,
-    children
+    children,
+    toc: null, // only effective for md file
+    siblings: true, // only effective for md file
+    parentPath: ''
   }
+
   return result
 }
 
@@ -239,6 +257,7 @@ md.use(mip, {
 
 export default {
   env: {
+    // will be injected to vuex
     config,
     root,
     pathMap,
@@ -273,9 +292,7 @@ export default {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
-    '@nuxtjs/pwa',
-    // Doc: https://github.com/nuxt-community/dotenv-module
-    '@nuxtjs/dotenv'
+    '@nuxtjs/pwa'
   ],
   pwa: {
     meta: {
@@ -284,7 +301,9 @@ export default {
       description: config.description
     },
     manifest: {
-      name: config.title
+      name: config.title,
+      short_name: config.title,
+      description: config.description
     }
   },
   /*
@@ -301,7 +320,7 @@ export default {
     treeShake: true
   },
   router: {
-    middleware: 'root'
+    middleware: 'global'
   },
   build: {
     extend(config, ctx) {
@@ -325,6 +344,8 @@ export default {
     }
   },
   generate: {
-    routes: contentRoutes.concat(['/', '/404', '/tags', '/friends']).concat(tagsRoutes)
+    routes: contentRoutes
+      .concat(['/', '/404/', '/tags/', '/friends/'])
+      .concat(tagsRoutes)
   }
 }
