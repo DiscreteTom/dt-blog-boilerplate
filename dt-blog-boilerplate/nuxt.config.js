@@ -238,7 +238,7 @@ for (let key in pathMap) {
 let tagsRoutes = (function() {
   let result = []
   for (let key in tagMap) {
-    result.push('/tags/' + key)
+    result.push('/tags/' + key + '/')
   }
   return result
 })()
