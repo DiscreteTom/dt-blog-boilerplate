@@ -285,7 +285,8 @@ export default {
   css: [
     '@/assets/prettier-scroll-bar.less',
     '@/assets/github.css',
-    '@/assets/prism.min.css'
+    '@/assets/prism.min.css',
+    '@/assets/dt-blog-boilerplate.less'
   ],
   plugins: [],
   buildModules: ['@nuxtjs/vuetify'],
