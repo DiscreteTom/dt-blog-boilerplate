@@ -1,12 +1,8 @@
 // Fix overflow inline mathjax.
 // The mathjax's "linebreaks.automatic = true" is ugly.
 .markdown-body {
-	p, li {
+	p, ol, ul {
 		overflow-x: auto;
-		overflow-y: hidden;
-	}
-	ul, ol {
-		list-style-position: inside;
-		padding-left: 0 !important;
+		overflow-y: visible;
 	}
 }
