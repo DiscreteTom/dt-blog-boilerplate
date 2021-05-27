@@ -6,6 +6,7 @@ import Mode from 'frontmatter-markdown-loader/mode'
 import MarkdownIt from 'markdown-it'
 import mip from 'markdown-it-prism'
 import mia from 'markdown-it-anchor'
+import math from 'markdown-it-mathjax'
 import matter from 'gray-matter'
 import toc from 'markdown-toc'
 import uslug from 'uslug'
@@ -253,7 +254,9 @@ const md = new MarkdownIt({
 const uslugify = s => uslug(s)
 md.use(mip, {
   defaultLanguage: 'bash'
-}).use(mia, { slugify: uslugify })
+})
+  .use(mia, { slugify: uslugify })
+  .use(math())
 
 export default {
   env: {
