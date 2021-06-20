@@ -34,7 +34,8 @@ let config = {
   description: '',
   headScripts: [],
   friends: [],
-  friendsIcon: 'mdi-open-in-new'
+  friendsIcon: 'mdi-open-in-new',
+  friendsLabel: 'Friends'
 }
 // load global config
 void (function(config) {

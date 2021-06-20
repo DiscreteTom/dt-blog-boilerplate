@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="ml-5">Friends</h1>
+    <h1 class="ml-5">{{ $store.state.config.friendsLabel }}</h1>
     <v-divider class="my-3"></v-divider>
     <div class="d-flex flex-wrap">
       <v-card

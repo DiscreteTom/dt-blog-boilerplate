@@ -168,6 +168,7 @@ friends:
     url: https://example.com/
     description: xxx
 friendsIcon: mdi-open-in-new
+friendsLabel: Friends
 ```
 
 The `headScripts` can be used to append google analytics tracking code:
