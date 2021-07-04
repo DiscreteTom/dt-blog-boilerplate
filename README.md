@@ -18,7 +18,6 @@
     - [Folder Configuration](#folder-configuration)
     - [Markdown Front Matter](#markdown-front-matter)
   - [How to Test Locally](#how-to-test-locally)
-  - [FAQ](#faq)
 
 </details>
 
@@ -210,7 +209,6 @@ description: # default to title
 toc: true # enable table of contents
 siblings: true # enable previous/next post button
 ---
-
 ```
 
 ## How to Test Locally
@@ -233,8 +231,3 @@ After that, the structure of this repository folder should be like:
 
 3. Go into the `dt-blog-boilerplate` folder(where the `package.json` is located), run `npm install`, then `npm run dev`.
 4. View your blog site at http://localhost:3000.
-
-## FAQ
-
-- [Multiple lines Mathjax formulas flattened to one line?](https://github.com/wowchemy/wowchemy-hugo-modules/issues/291)
-  - Use 6 backslashes for a Mathjax linebreak.
