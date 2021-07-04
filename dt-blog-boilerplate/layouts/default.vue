@@ -176,11 +176,11 @@
     </v-app-bar>
 
     <!-- main content -->
-    <v-content>
+    <v-main>
       <v-container>
         <nuxt />
       </v-container>
-    </v-content>
+    </v-main>
 
     <!-- Share Tip -->
     <v-snackbar v-model="snackbar" :timeout="2000" right top>
