@@ -77,6 +77,7 @@ export default {
   router: {
     middleware: 'global'
   },
+  ssr: false,
   build: {
     extend(config, ctx) {
       config.module.rules.push(
