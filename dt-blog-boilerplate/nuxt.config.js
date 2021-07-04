@@ -9,6 +9,9 @@ import {
   contentRoutes,
   tagsRoutes
 } from './utils/content'
+import { generateSearchableContent } from './utils/searchable-gen'
+
+generateSearchableContent()
 
 export default {
   env: {
