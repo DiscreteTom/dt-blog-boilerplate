@@ -26,6 +26,7 @@
     "markdown-it-mathjax": "^2.0.0",
     "markdown-it-prism": "^2.1.8",
     "markdown-toc": "^1.2.0",
+    "nodejieba": "^2.5.2",
     "nuxt": "^2.15.7",
     "uslug": "^1.0.4",
     "uuid": "^8.3.2",
