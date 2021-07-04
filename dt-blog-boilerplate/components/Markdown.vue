@@ -133,6 +133,7 @@ export default {
   // style of markdown content
   code {
     color: #000;
+    background-color: transparent;
     font-size: 85%;
     box-shadow: none;
     font-weight: normal;
@@ -141,6 +142,13 @@ export default {
       content: none;
       letter-spacing: none;
     }
+  }
+
+  p,
+  ol,
+  ul {
+    overflow-x: auto;
+    overflow-y: hidden;
   }
 }
 </style>
