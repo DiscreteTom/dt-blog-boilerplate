@@ -2,25 +2,6 @@
 
 > View [my blog](https://discretetom.github.io/) to preview this boilerplate.
 
-<details>
-
-<summary>Table of Contents</summary>
-
-- [DT-BLOG-BOILERPLATE](#dt-blog-boilerplate)
-  - [Features](#features)
-  - [How to Use](#how-to-use)
-    - [Modify Your Github Repository](#modify-your-github-repository)
-    - [Setup Personal Access Token](#setup-personal-access-token)
-    - [Setup Github Actions](#setup-github-actions)
-    - [Organize Your Content](#organize-your-content)
-  - [Configuration](#configuration)
-    - [Global Configuration](#global-configuration)
-    - [Folder Configuration](#folder-configuration)
-    - [Markdown Front Matter](#markdown-front-matter)
-  - [How to Test Locally](#how-to-test-locally)
-
-</details>
-
 ## Features
 
 - Content/Style splitting.
