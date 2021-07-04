@@ -28,6 +28,10 @@
     "markdown-toc": "^1.2.0",
     "nodejieba": "^2.5.2",
     "nuxt": "^2.15.7",
+    "remark": "^13.0.0",
+    "remark-frontmatter": "^3.0.0",
+    "rimraf": "^3.0.2",
+    "strip-markdown": "^4.0.0",
     "uslug": "^1.0.4",
     "uuid": "^8.3.2",
     "yaml-loader": "^0.5.0"
