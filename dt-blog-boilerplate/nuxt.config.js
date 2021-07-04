@@ -267,7 +267,6 @@ export default {
     pathMap,
     tagMap
   },
-  mode: 'universal',
   head: {
     titleTemplate: '%s - ' + config.title,
     title: config.title,
