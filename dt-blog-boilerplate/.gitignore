@@ -88,3 +88,7 @@ sw.*
 
 # Vim swap files
 *.swp
+
+
+# ignore generated searchable files
+static/search/*
