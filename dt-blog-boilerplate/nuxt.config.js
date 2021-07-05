@@ -102,8 +102,8 @@ export default {
   },
   generate: {
     routes: contentRoutes
-    .concat(tagsRoutes)
-    .concat(searchRoutes)
-    .concat(['/', '/tags/', '/friends/'])
+      .concat(tagsRoutes)
+      .concat(searchRoutes)
+      .concat(['/', '/tags/', '/friends/'])
   }
 }
