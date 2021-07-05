@@ -12,7 +12,7 @@ import rimraf from 'rimraf'
  * ```
  * {
  *   'a': {
- *     'apple': []
+ *     'apple': [paths]
  *   }
  * }
  * ```

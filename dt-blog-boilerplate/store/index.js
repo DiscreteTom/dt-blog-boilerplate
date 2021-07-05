@@ -19,7 +19,7 @@ export default {
        * ```
        * {
        *   'a': {
-       *     'apple': []
+       *     'apple': [paths]
        *   }
        * }
        * ```
@@ -59,7 +59,7 @@ export default {
      * ```
      * start = 'a'
      * items = {
-     *   'apple': []
+     *   'apple': [paths]
      * }
      * ```
      */
