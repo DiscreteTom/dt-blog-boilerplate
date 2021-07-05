@@ -18,7 +18,7 @@ import rimraf from 'rimraf'
  * ```
  */
 let searchTable = {}
-const staticDir = './static/search'
+const staticDir = './static/searchable-static'
 
 let md = remark()
   .use(fm)

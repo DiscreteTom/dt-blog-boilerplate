@@ -56,7 +56,7 @@ export default {
       // Lazily load input items
       if (val && val.length > 0 && !(val[0] in this.$store.state.searchItems)) {
         this.isLoading = true
-        fetch(`/search/${val[0]}.json`)
+        fetch(`/searchable-static/${val[0]}.json`)
           .then(res => res.json())
           .then(res => {
             this.$store.commit('addSearchItems', { start: val[0], items: res })
