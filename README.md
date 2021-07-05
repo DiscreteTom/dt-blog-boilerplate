@@ -4,6 +4,8 @@
 
 ## Features
 
+- Content search.
+  - Support Chinese and English.
 - Content/Style splitting.
   - Blog content and style are in separate repositories.
 - Easy content organization.
