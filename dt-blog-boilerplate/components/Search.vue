@@ -44,6 +44,9 @@ export default {
     }
   },
   watch: {
+    model(v) {
+      this.$router.push({ path: `/search/${v}/` })
+    },
     search(val) {
       this.updateItems()
 
