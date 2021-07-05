@@ -5,9 +5,9 @@ export default function({ route, redirect, store }) {
   }
 
   // format path
-  if (!route.path.endsWith('/')) {
-    return redirect(route.path + '/')
-  }
+  // if (!route.path.endsWith('/')) {
+  //   return redirect(route.path + '/')
+  // }
 
   // update displayToc && current
   let dirent = store.state.pathMap[route.path]
