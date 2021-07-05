@@ -14,7 +14,17 @@ export default {
        */
       navs: [], // displayed in components/BreadCrumbs
       current: process.env.root, // current dirent
-      hasToc: false
+      hasToc: false,
+      /**
+       * ```
+       * {
+       *   'a': {
+       *     'apple': []
+       *   }
+       * }
+       * ```
+       */
+      searchItems: {}
     }
   },
   mutations: {
@@ -44,6 +54,17 @@ export default {
     },
     setHasToc(state, v = false) {
       state.hasToc = v
+    },
+    /**
+     * ```
+     * start = 'a'
+     * items = {
+     *   'apple': []
+     * }
+     * ```
+     */
+    addSearchItems(state, {start, items}) {
+        state.searchItems[start] = items
     }
   }
 }

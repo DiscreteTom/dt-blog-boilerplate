@@ -15,6 +15,17 @@
       </div>
 
       <v-list>
+        <!-- search bar -->
+        <v-list-item>
+          <v-list-item-action>
+            <v-icon>mdi-magnify</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <Search></Search>
+          </v-list-item-content>
+        </v-list-item>
+        <v-divider></v-divider>
+
         <!-- TOC -->
         <div v-show="$store.state.hasToc" class="hidden-md-and-up mb-5">
           <v-list-item @click="toggleToc">
@@ -201,9 +212,10 @@
 import ClipboardJS from 'clipboard'
 import BreadCrumbs from '~/components/BreadCrumbs.vue'
 import TOC from '~/components/TOC.vue'
+import Search from '~/components/Search.vue'
 
 export default {
-  components: { BreadCrumbs, TOC },
+  components: { BreadCrumbs, TOC, Search },
   data() {
     return {
       clipboard: null,
