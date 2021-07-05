@@ -1,9 +1,9 @@
 <template>
   <v-app>
-    <p v-if="error.statusCode === 404" class="err-title">
+    <p v-if="error.statusCode === 404">
       {{ pageNotFound }}
     </p>
-    <p v-else class="err-title">
+    <p v-else>
       {{ otherError }}
     </p>
     <v-btn to="/" plain>
