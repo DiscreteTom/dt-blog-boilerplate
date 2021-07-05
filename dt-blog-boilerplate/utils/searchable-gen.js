@@ -18,6 +18,7 @@ import rimraf from 'rimraf'
  * ```
  */
 let searchTable = {}
+let searchRoutes = []
 const staticDir = './static/searchable-static'
 
 let md = remark()
@@ -28,6 +29,9 @@ const noise = ' \\\n\t\r"\'>|?<[.,/#!$%^&*;:{}=-+_`~()]！？｡。＂＃＄％�
   ''
 )
 
+/**
+ * generate searchable static files, `searchTable` and `searchRoutes`
+ */
 function generateSearchableContent() {
   // clear existing static files
   rimraf.sync(staticDir)
@@ -46,7 +50,7 @@ function generateSearchableContent() {
         .map(word => word.toLowerCase())
     )
 
-    // construct searchTable
+    // construct searchTable and searchRoutes
     words.forEach(w => {
       let start = w[0]
       if (!(start in searchTable)) {
@@ -56,6 +60,7 @@ function generateSearchableContent() {
         searchTable[start][w] = []
       }
       searchTable[start][w].push(dirent.path)
+      searchRoutes.push(`/search/${w}/`)
     })
   }
 
@@ -73,4 +78,6 @@ function generateSearchableContent() {
   }
 }
 
-export { generateSearchableContent }
+generateSearchableContent()
+
+export { searchRoutes }

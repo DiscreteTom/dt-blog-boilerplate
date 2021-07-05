@@ -12,7 +12,7 @@ export default function({ route, redirect, store }) {
   // update displayToc && current
   let dirent = store.state.pathMap[route.path]
   if (dirent == null) {
-    // this is not a dirent, e.g. 404, friends, tags
+    // this is not a dirent, e.g. 404, friends, tags, search
     store.commit('setHasToc', false)
   } else {
     // this is a dirent

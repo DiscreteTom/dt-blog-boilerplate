@@ -9,9 +9,7 @@ import {
   contentRoutes,
   tagsRoutes
 } from './utils/content'
-import { generateSearchableContent } from './utils/searchable-gen'
-
-generateSearchableContent()
+import { searchRoutes } from './utils/searchable-gen'
 
 export default {
   env: {
@@ -104,7 +102,8 @@ export default {
   },
   generate: {
     routes: contentRoutes
-      .concat(['/', '/tags/', '/friends/'])
-      .concat(tagsRoutes)
+    .concat(tagsRoutes)
+    .concat(searchRoutes)
+    .concat(['/', '/tags/', '/friends/'])
   }
 }
