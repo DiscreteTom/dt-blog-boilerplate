@@ -44,7 +44,6 @@ export default {
     }
   },
   watch: {
-    '$store.state.searchItems': 'updateItems',
     search(val) {
       this.updateItems()
 
@@ -61,6 +60,7 @@ export default {
           .then(res => res.json())
           .then(res => {
             this.$store.commit('addSearchItems', { start: val[0], items: res })
+            this.updateItems()
           })
           .catch(err => {
             console.log(err)
