@@ -66,7 +66,7 @@ function generateSearchableContent() {
     try {
       fs.writeFileSync(`${staticDir}/${start}.json`, JSON.stringify(content))
     } catch (error) {
-      console.log(`Can't write file: ${staticDir}/${start}.json`)
+      console.log(`Failed to generate static file: ${staticDir}/${start}.json`)
       console.log(error)
     }
   }
