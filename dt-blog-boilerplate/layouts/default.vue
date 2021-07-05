@@ -16,7 +16,7 @@
 
       <v-list>
         <!-- search bar -->
-        <v-list-item>
+        <v-list-item dense>
           <v-list-item-action>
             <v-icon>mdi-magnify</v-icon>
           </v-list-item-action>
@@ -24,7 +24,7 @@
             <Search></Search>
           </v-list-item-content>
         </v-list-item>
-        <v-divider></v-divider>
+        <v-divider class="mb-3"></v-divider>
 
         <!-- TOC -->
         <div v-show="$store.state.hasToc" class="hidden-md-and-up mb-5">
