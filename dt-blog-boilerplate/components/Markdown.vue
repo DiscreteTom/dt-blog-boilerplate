@@ -131,7 +131,9 @@ export default {
 @deep: ~'>>>';
 .content @{deep} {
   // style of markdown content
-  code {
+
+  // block code
+  code[class^='language-'] {
     color: #000;
     background-color: transparent;
     font-size: 85%;
