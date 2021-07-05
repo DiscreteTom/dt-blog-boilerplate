@@ -46,7 +46,7 @@ function generateSearchableContent() {
     let words = new Set(
       jieba
         .cut(String(md.processSync(text)), true)
-        .filter(word => !(word.length == 0 || noise.includes(word) > 0))
+        .filter(word => !(word.length == 0 || noise.includes(word)))
         .map(word => word.toLowerCase())
     )
 
