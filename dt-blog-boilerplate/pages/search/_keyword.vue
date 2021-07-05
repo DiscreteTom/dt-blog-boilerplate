@@ -8,11 +8,22 @@
         <v-icon>mdi-chevron-right</v-icon>
       </h1>
     </div>
-    <DirentCard
-      v-for="path in $store.state.searchItems[$route.params.keyword]"
-      :key="path"
-      :dirent="$store.state.pathMap[path]"
-    ></DirentCard>
+
+    <div v-if="paths.length">
+      <DirentCard
+        v-for="path in paths"
+        :key="path"
+        :dirent="$store.state.pathMap[path]"
+      ></DirentCard>
+    </div>
+    <div v-else>
+      <p>
+        No result
+      </p>
+      <v-btn to="/" plain block>
+        go to home page
+      </v-btn>
+    </div>
   </div>
 </template>
 
@@ -20,13 +31,61 @@
 import DirentCard from '~/components/DirentCard.vue'
 
 export default {
-  validate({ params, store }) {
-    return (
-      params.keyword.length > 0 &&
-      params.keyword[0] in store.state.searchItems &&
-      params.keyword in store.state.searchItems[params.keyword]
-    )
+  components: { DirentCard },
+  data() {
+    return {
+      paths: []
+    }
   },
-  components: { DirentCard }
+  methods: {
+    loadPaths() {
+      this.paths = []
+
+      let keyword = this.$route.params.keyword
+      if (
+        keyword.length &&
+        keyword[0] in this.$store.state.searchItems &&
+        keyword in this.$store.state.searchItems[keyword[0]]
+      )
+        this.paths = this.$store.state.searchItems[keyword[0]][keyword]
+    }
+  },
+  mounted() {
+    let keyword = this.$route.params.keyword
+
+    if (keyword.length) {
+      if (!(keyword[0] in this.$store.state.searchItems)) {
+        fetch(`/searchable-static/${keyword[0]}.json`)
+          .then(res => res.json())
+          .then(res => {
+            this.$store.commit('addSearchItems', {
+              start: keyword[0],
+              items: res
+            })
+            this.loadPaths()
+          })
+          .catch(err => {
+            console.log(err)
+          })
+          .finally(() => (this.isLoading = false))
+      } else {
+        this.loadPaths()
+      }
+    }
+  }
 }
 </script>
+
+<style scoped>
+p {
+  text-align: center;
+  font-size: 50px;
+  margin-top: 30vh;
+  font-weight: bolder;
+  color: gray;
+}
+v-btn {
+  border-bottom: solid 1px;
+  margin: auto;
+}
+</style>
