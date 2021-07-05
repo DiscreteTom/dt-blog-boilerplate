@@ -43,11 +43,12 @@ function generateSearchableContent() {
       jieba
         .cut(String(md.processSync(text)), true)
         .filter(word => !(word.length == 0 || noise.includes(word) > 0))
+        .map(word => word.toLowerCase())
     )
 
     // construct searchTable
     words.forEach(w => {
-      let start = w[0].toLowerCase()
+      let start = w[0]
       if (!(start in searchTable)) {
         searchTable[start] = {}
       }
