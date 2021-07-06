@@ -45,7 +45,7 @@ function generateSearchableContent() {
     let text = fs.readFileSync(dirent.absPath, 'utf8')
     let words = new Set(
       jieba
-        .cut(String(md.processSync(text)), true)
+        .cutForSearch(String(md.processSync(text)), true)
         .filter(word => !(word.length == 0 || noise.includes(word)))
         .map(word => word.toLowerCase())
     )
