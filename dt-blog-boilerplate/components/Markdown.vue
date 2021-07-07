@@ -61,8 +61,8 @@ export default {
         ).then(m => {
           this.attributes = m.attributes
           this.selectedArticle = m.vue.component
-          // progress bar state
-          this.$nuxt.$loading.finish()
+
+          // after markdown is rendered
           this.$nextTick().then(() => {
             // re-render mathjax content
             // ref: https://stackoverflow.com/a/52638172/12407789
@@ -74,9 +74,9 @@ export default {
             ])
 
             // go to anchor
-            // ref: https://stackoverflow.com/questions/43829671/pass-an-argument-to-callback-in-mathjax-2-7-1
             MathJax.Hub.Queue([this.scroll])
-
+            // set progressbar to finish
+            MathJax.Hub.Queue([this.$nuxt.$loading.finish])
           })
           // get next & previous post link
           if (this.$store.state.current.siblings) {
