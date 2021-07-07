@@ -58,15 +58,18 @@ export default {
           this.selectedArticle = m.vue.component
           // progress bar state
           this.$nuxt.$loading.finish()
-          // re-render mathjax content
-          // ref: https://stackoverflow.com/a/52638172/12407789
-          // ref: https://juejin.im/post/5bb60837e51d450e805b7d97
           this.$nextTick().then(() => {
+            // re-render mathjax content
+            // ref: https://stackoverflow.com/a/52638172/12407789
+            // ref: https://juejin.im/post/5bb60837e51d450e805b7d97
             window.MathJax.Hub.Queue([
               'Typeset',
               window.MathJax.Hub,
               document.getElementsByClassName('markdown-body')
             ])
+
+            // go to anchor
+            this.$vuetify.goTo(decodeURIComponent(this.$route.hash))
           })
           // get next & previous post link
           if (this.$store.state.current.siblings) {
