@@ -47,6 +47,11 @@ export default {
     }
   },
   methods: {
+    scroll() {
+      if (this.$route.hash) {
+        this.$vuetify.goTo(decodeURIComponent(this.$route.hash))
+      }
+    },
     refresh() {
       if (!this.$store.state.current.isDir) {
         // load markdown
@@ -70,10 +75,8 @@ export default {
 
             // go to anchor
             // ref: https://stackoverflow.com/questions/43829671/pass-an-argument-to-callback-in-mathjax-2-7-1
-            MathJax.Hub.Queue([
-              this.$vuetify.goTo,
-              decodeURIComponent(this.$route.hash)
-            ])
+            MathJax.Hub.Queue([this.scroll])
+
           })
           // get next & previous post link
           if (this.$store.state.current.siblings) {
