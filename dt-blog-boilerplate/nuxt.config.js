@@ -36,7 +36,7 @@ export default {
     // disable escaped innerHTML, ref: https://vue-meta.nuxtjs.org/api/#dangerouslydisablesanitizersbytagid
     __dangerouslyDisableSanitizersByTagID: dangerouslyDisableSanitizersByTagID
   },
-  loading: { color: 'gray', throttle: 50 },
+  loading: { color: 'gray', throttle: 200, continuous: true },
   css: [
     '@/assets/prettier-scroll-bar.less',
     '@/assets/github.css',
