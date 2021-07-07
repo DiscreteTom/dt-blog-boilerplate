@@ -5,7 +5,7 @@
       <v-list-item
         v-for="(t, i) in $store.state.current.toc"
         :key="i"
-        @click="$vuetify.goTo('#' + t.slug)"
+        @click="scroll(t.slug)"
       >
         <v-list-item-content>
           <v-list-item-title>
@@ -22,6 +22,12 @@
 
 <script>
 export default {
-  props: { header: Boolean }
+  props: { header: Boolean },
+  methods: {
+    scroll(slug) {
+      this.$router.push(this.$route.path + '#' + slug)
+      this.$vuetify.goTo('#' + slug)
+    }
+  }
 }
 </script>
