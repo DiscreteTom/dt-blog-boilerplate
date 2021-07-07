@@ -69,7 +69,11 @@ export default {
             ])
 
             // go to anchor
-            this.$vuetify.goTo(decodeURIComponent(this.$route.hash))
+            // ref: https://stackoverflow.com/questions/43829671/pass-an-argument-to-callback-in-mathjax-2-7-1
+            MathJax.Hub.Queue([
+              this.$vuetify.goTo,
+              decodeURIComponent(this.$route.hash)
+            ])
           })
           // get next & previous post link
           if (this.$store.state.current.siblings) {
