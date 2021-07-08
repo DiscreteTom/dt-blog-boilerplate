@@ -14,7 +14,22 @@ const md = new MarkdownIt({
   html: true,
   typographer: true
 })
-const uslugify = s => uslug(s)
+
+let repeatedHeader = {} // {header: count}
+function uslugify(s) {
+  if (s in repeatedHeader) {
+    repeatedHeader[s] += 1
+  } else {
+    repeatedHeader[s] = 0
+  }
+
+  if (repeatedHeader[s] == 0) return uslug(s)
+  else {
+    // ref: https://gist.github.com/jonschlinkert/ac5d8122bfaaa394f896
+    return uslug(s) + '-' + repeatedHeader[s]
+  }
+}
+
 md.use(mip, {
   defaultLanguage: 'bash'
 })
