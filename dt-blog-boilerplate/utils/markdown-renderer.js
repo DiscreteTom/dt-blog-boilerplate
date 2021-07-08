@@ -7,33 +7,36 @@ import loadLanguages from 'prismjs/components/'
 
 loadLanguages() // load all prismjs supported languages
 
-/**
- * Markdown renderer
- */
-const md = new MarkdownIt({
-  html: true,
-  typographer: true
-})
+function buildRenderer() {
+  /**
+   * Markdown renderer
+   */
+  const md = new MarkdownIt({
+    html: true,
+    typographer: true
+  })
 
-let repeatedHeader = {} // {header: count}
-function uslugify(s) {
-  if (s in repeatedHeader) {
-    repeatedHeader[s] += 1
-  } else {
-    repeatedHeader[s] = 0
+  let repeatedHeader = {} // {header: count}
+  function uslugify(s) {
+    if (s in repeatedHeader) {
+      repeatedHeader[s] += 1
+    } else {
+      repeatedHeader[s] = 0
+    }
+
+    if (repeatedHeader[s] == 0) return uslug(s)
+    else {
+      // ref: https://gist.github.com/jonschlinkert/ac5d8122bfaaa394f896
+      return uslug(s) + '-' + repeatedHeader[s]
+    }
   }
 
-  if (repeatedHeader[s] == 0) return uslug(s)
-  else {
-    // ref: https://gist.github.com/jonschlinkert/ac5d8122bfaaa394f896
-    return uslug(s) + '-' + repeatedHeader[s]
-  }
+  md.use(mip, {
+    defaultLanguage: 'bash'
+  })
+    .use(mia, { slugify: uslugify })
+    .use(math())
+  return md
 }
 
-md.use(mip, {
-  defaultLanguage: 'bash'
-})
-  .use(mia, { slugify: uslugify })
-  .use(math())
-
-export { md }
+export { buildRenderer }

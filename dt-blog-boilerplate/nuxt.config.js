@@ -1,7 +1,7 @@
 const path = require('path')
 import Mode from 'frontmatter-markdown-loader/mode'
 import { config, dangerouslyDisableSanitizersByTagID } from './utils/config'
-import { md } from './utils/markdown-renderer'
+import { buildRenderer } from './utils/markdown-renderer'
 import {
   root,
   pathMap,
@@ -104,6 +104,7 @@ export default {
           options: {
             mode: [Mode.VUE_RENDER_FUNCTIONS, Mode.VUE_COMPONENT],
             markdown(body) {
+              let md = buildRenderer()
               return md.render(body)
             }
           }
