@@ -25,7 +25,7 @@ export default {
   props: { header: Boolean },
   methods: {
     scroll(slug) {
-      this.$router.push(this.$route.path + '#' + slug)
+      this.$router.replace(this.$route.path + '#' + slug)
       this.$vuetify.goTo('#' + slug)
     }
   }
