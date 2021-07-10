@@ -80,6 +80,7 @@ export default {
   },
   ssr: false,
   build: {
+    babel: { minified: true },
     extend(config, ctx) {
       config.module.rules.push(
         {
