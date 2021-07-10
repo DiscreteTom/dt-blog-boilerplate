@@ -106,5 +106,6 @@ export default {
       .concat(tagsRoutes)
       .concat(searchRoutes)
       .concat(['/', '/tags/', '/friends/'])
-  }
+  },
+  target: 'static'
 }
