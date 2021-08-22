@@ -29,7 +29,7 @@
               small
               v-for="tag in dirent.tags"
               :key="tag"
-              @click.stop.prevent="$router.push('/tags/' + tag)"
+              @click.stop.prevent="$router.push('/tags/' + encodeTag(tag))"
             >
               {{ tag }}
             </v-chip>
@@ -55,6 +55,11 @@ export default {
       imgPosition: 'right',
       imgSize: 'cover',
       imgSrc: ''
+    }
+  },
+  methods: {
+    encodeTag(s) {
+      return encodeURIComponent(s)
     }
   },
   created() {

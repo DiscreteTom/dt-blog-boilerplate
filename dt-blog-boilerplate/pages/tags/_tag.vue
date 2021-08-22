@@ -4,7 +4,7 @@
     <div class="ml-5 mb-5">
       <h1>
         <v-icon>mdi-tag</v-icon>
-        {{ $route.params.tag }}
+        {{ decodeTag($route.params.tag) }}
         <v-icon>mdi-chevron-right</v-icon>
       </h1>
     </div>
@@ -22,6 +22,11 @@ import DirentCard from '~/components/DirentCard.vue'
 export default {
   validate({ params, store }) {
     return store.state.tagMap[params.tag]
+  },
+  methods: {
+    decodeTag(t) {
+      return decodeURIComponent(t)
+    }
   },
   components: { DirentCard }
 }
