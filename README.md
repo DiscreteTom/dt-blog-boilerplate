@@ -6,6 +6,7 @@
 
 - Content search.
   - Support Chinese and English.
+  - Tab to Search.
 - Content/Style splitting.
   - Blog content and style are in separate repositories.
 - Easy content organization.
@@ -143,7 +144,7 @@ folderIcon: mdi-folder-outline # mdi icon name
 fileIcon: mdi-file # mdi icon name
 orderDecider: "@" # can be multiple characters
 reverse: false # reverse dirents order
-description: # default to title
+description: "" # default to title
 headScripts: [] # to append custom scripts
 friends:
   - title: xxx
@@ -151,6 +152,9 @@ friends:
     description: xxx
 friendsIcon: mdi-open-in-new
 friendsLabel: Friends
+searchName: "" # tab-to-search name, default to title
+searchDescription: "" # tab-to-search description, default to description
+domainName: "" # default to <author>.github.io
 ```
 
 The `headScripts` can be used to append google analytics tracking code:

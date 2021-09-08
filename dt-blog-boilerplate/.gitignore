@@ -91,5 +91,5 @@ sw.*
 
 
 # ignore generated searchable files
-static/search/*
-static/searchable-static/*
+static/searchable-static
+static/content-search.xml

@@ -31,7 +31,15 @@ export default {
         content: config.description || config.title
       }
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    link: [
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      {
+        rel: 'search',
+        type: 'application/opensearchdescription+xml',
+        href: '/content-search.xml',
+        title: config.searchName
+      }
+    ],
     script: config.headScripts,
     // disable escaped innerHTML, ref: https://vue-meta.nuxtjs.org/api/#dangerouslydisablesanitizersbytagid
     __dangerouslyDisableSanitizersByTagID: dangerouslyDisableSanitizersByTagID

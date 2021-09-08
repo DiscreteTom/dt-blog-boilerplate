@@ -19,7 +19,10 @@ let config = {
   headScripts: [],
   friends: [],
   friendsIcon: 'mdi-open-in-new',
-  friendsLabel: 'Friends'
+  friendsLabel: 'Friends',
+  searchName: '',
+  searchDescription: '',
+  domainName: ''
 }
 
 // load global config
@@ -27,6 +30,11 @@ let t = yaml.safeLoad(fs.readFileSync('../_config.yml', 'utf8')) || {}
 for (let key in config) {
   if (t[key]) config[key] = t[key]
 }
+if (!config.description) config.description = config.title
+if (!config.searchName) config.searchName = config.title
+if (!config.searchDescription) config.searchDescription = config.description
+if (!config.domainName)
+  config.domainName = `${config.author.toLowerCase()}.github.io`
 
 /**
  * ref: https://vue-meta.nuxtjs.org/api/#dangerouslydisablesanitizersbytagid

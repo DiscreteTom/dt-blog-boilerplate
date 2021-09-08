@@ -4,8 +4,8 @@ import jieba from 'nodejieba'
 import remark from 'remark'
 import strip from 'strip-markdown'
 import fm from 'remark-frontmatter'
-import { exit } from 'process'
 import rimraf from 'rimraf'
+import { config } from './config'
 
 /**
  * For example, search `apple` in a file:
@@ -79,5 +79,16 @@ function generateSearchableContent() {
 }
 
 generateSearchableContent()
+
+// add tab-to-search
+let openSearchFile = `
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
+  <ShortName>${config.searchName}</ShortName>
+  <Description>${config.searchDescription}</Description>
+  <InputEncoding>UTF-8</InputEncoding>
+  <Url type="text/html" template="https://${config.domainName}/search/{searchTerms}/"/>
+</OpenSearchDescription>
+`
+fs.writeFileSync(`./static/content-search.xml`, openSearchFile)
 
 export { searchRoutes }
