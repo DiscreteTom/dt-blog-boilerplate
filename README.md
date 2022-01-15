@@ -22,11 +22,6 @@
 
 If you gonna deploy your blog for your **user repo**, which means your repo name is `<username>.github.io`, you have to deploy your rendered content to your master branch, so you have to put your content in another branch, e.g. `source`. For a better accessibility you can set this `source` branch as the default branch of the blog repository.
 
-### Setup Personal Access Token
-
-This repo uses [peaceiris/actions-gh-pages](https://github.com/peaceiris/actions-gh-pages) to deploy to github pages.
-See [this part](https://github.com/peaceiris/actions-gh-pages#%EF%B8%8F-set-personal-access-token-personal_token) to generate a personal access token, then add it to your repo **Secrets** in the Settings page.
-
 ### Setup Github Actions
 
 > Tips: you can always see my [blog source code](https://github.com/DiscreteTom/discretetom.github.io) as a reference.
@@ -81,7 +76,9 @@ jobs:
       - name: deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
-          personal_token: ${{ secrets.GH_PAT }} # your personal access token
+          # Github token, which is automatically provided to the action.
+          # You don't need to define this secret in your repo settings.
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: master # target branch
           publish_dir: boilerplateRepo/dt-blog-boilerplate/dist
 ```
