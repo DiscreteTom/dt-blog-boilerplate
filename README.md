@@ -1,5 +1,7 @@
 # DT-BLOG-BOILERPLATE
 
+![Github Pages](https://github.com/DiscreteTom/discretetom.github.io/workflows/Github%20Pages/badge.svg)
+
 > View [my blog](https://discretetom.github.io/) to preview this boilerplate.
 
 ## Features
