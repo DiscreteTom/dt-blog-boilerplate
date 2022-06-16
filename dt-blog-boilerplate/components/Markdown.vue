@@ -64,19 +64,10 @@ export default {
 
           // after markdown is rendered
           this.$nextTick().then(() => {
-            // re-render mathjax content
-            // ref: https://stackoverflow.com/a/52638172/12407789
-            // ref: https://juejin.im/post/5bb60837e51d450e805b7d97
-            window.MathJax.Hub.Queue([
-              'Typeset',
-              window.MathJax.Hub,
-              document.getElementsByClassName('markdown-body')
-            ])
-
             // go to anchor
-            MathJax.Hub.Queue([this.scroll])
+            this.scroll()
             // set progressbar to finish
-            MathJax.Hub.Queue([this.$nuxt.$loading.finish])
+            this.$nuxt.$loading.finish()
           })
           // get next & previous post link
           if (this.$store.state.current.siblings) {

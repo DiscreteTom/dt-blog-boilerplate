@@ -2,6 +2,7 @@ import MarkdownIt from 'markdown-it'
 import mip from 'markdown-it-prism'
 import mia from 'markdown-it-anchor'
 import math from 'markdown-it-mathjax'
+import mathjax3 from 'markdown-it-mathjax3'
 import uslug from 'uslug'
 import loadLanguages from 'prismjs/components/'
 
@@ -36,6 +37,7 @@ function buildRenderer() {
   })
     .use(mia, { slugify: uslugify })
     .use(math())
+    .use(mathjax3)
   return md
 }
 
