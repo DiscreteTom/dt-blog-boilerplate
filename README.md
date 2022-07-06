@@ -59,15 +59,6 @@ jobs:
           path: contentRepo
           persist-credentials: false
 
-      - name: cache
-        id: cache
-        uses: actions/cache@v1
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
       - name: install & generate
         run: |
           cp -r contentRepo/* boilerplateRepo
@@ -215,5 +206,5 @@ After that, the structure of this repository folder should be like:
 └─...                     # other files
 ```
 
-3. Go into the `dt-blog-boilerplate` folder(where the `package.json` is located), run `npm install`, then `npm run dev`.
+3. Go into the `dt-blog-boilerplate` folder(where the `package.json` is located), run `yarn`, then `yarn dev`.
 4. View your blog site at http://localhost:3000.
